@@ -1,0 +1,20 @@
+C:\>chkdsk d: /f
+The type of the file system is NTFS.
+
+CHKDSK is verifying files...
+File verification completed.
+CHKDSK is verifying indexes...
+Index verification completed.
+CHKDSK is verifying security descriptors...
+Security descriptor verification completed.
+
+  1048559 kilobytes total disk space.
+   358254 kilobytes in 2550 user files.
+      772 kilobytes in 256 indexes.
+    10743 kilobytes in use by the system.
+     4096 kilobytes occupied by the logfile.
+   678790 kilobytes available on disk.
+
+      512 bytes in each allocation unit.
+  2097119 total allocation units on disk.
+  1357581 allocation units available on disk.

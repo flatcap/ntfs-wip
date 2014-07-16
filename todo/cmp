@@ -1,0 +1,38 @@
+compare gross features
+        ntfs version
+        volume size
+        cluster size
+        volume label
+        freespace
+        look at $Boot for more ideas
+
+compare metadata
+        records in mft
+        log file size
+        log file clean / last used datetime
+        mft mirr location
+
+compare dirs
+        refer to same dir
+        which is newer
+        file counts
+
+compare files
+        refer to same file
+        which is newer
+        which is bigger
+        which has more named streams
+        level of fragmentation
+
+compare attributes
+        which mft record has more
+        which are newer
+        which are bigger
+
+Same file/dir implies same sequence number (mft record not reused)
+compare attribute ids
+compare timestamps
+file could be newer, but accessed less recently
+
+add command-line options for all these comparisons (and --all)
+

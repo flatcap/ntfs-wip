@@ -1,0 +1,7 @@
+#!/bin/bash
+
+mkdir meta$1
+
+for i in Bitmap MFT MFTMirr; do
+	../ntfscat --force --quiet $1 \$$i > meta$1/$i
+done

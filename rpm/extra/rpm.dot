@@ -1,0 +1,20 @@
+digraph "bla" {
+	graph [ rankdir = "LR", bgcolor = white ];
+	node [ shape = record, color = black, fillcolor = lightcyan, style = filled ];
+
+	rpm_arch	[ label = "rpm_arch|{{aid\lcid\laname\l}|{unique id\lcategory id\larch name\l}}" ];
+	rpm_category	[ label = "rpm_category|{{cid\lcname\l}|{unique id\lcategory name\l}}" ];
+	rpm_distro	[ label = "rpm_distro|{{did\lvendor\labbr\lversion\ldname\ltitle\lbody\l}|{unique id\lvendor name\lvendor abbr\ldistro version\ldistro name\lpage title\lpage text\l}}" ];
+	rpm_file	[ label = "rpm_file|{{fid\laid\lsid\lrid\lpid\lfname\l}|{unique id\larch id\lsection id\lrelease id\lperson id\lfile name\l}}" ];
+	rpm_section	[ label = "rpm_section|{{sid\lbrief\ltitle\lbody\lthanks\lsdo\l}|{unique id\lbrief desc\lsection title\lsection text\lshow thanks\ldisplay order\l}}" ];
+	rpm_release	[ label = "rpm_release|{{rid\ldid\lrname\l}|{unique id\ldistro id\lrelease name\l}}" ];
+	rpm_person	[ label = "rpm_person|{{pid\lpname\lnickname\lemail\lwebpage\l}|{unique id\lperson's name\lperson's nickname\lperson's email addrress\lperson's web address\l}}" ];
+
+	rpm_arch -> rpm_category	[ label = "cid" ];
+	rpm_file -> rpm_arch		[ label = "aid" ];
+	rpm_file -> rpm_person		[ label = "pid" ];
+	rpm_file -> rpm_release		[ label = "rid" ];
+	rpm_file -> rpm_section		[ label = "sid" ];
+	rpm_release -> rpm_distro	[ label = "did" ];
+};
+

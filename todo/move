@@ -1,0 +1,193 @@
+MOVE
+        move bits
+        work at data run level
+
+        data run, new loc, flags = start, best, end
+        inode, attr
+
+        data / metadata?
+        $DATA, $INDEX_ALLOCATION, $BITMAP, $ATTR_LIST, $SECURITY
+        file/dir
+
+        move (inode, attr, datarun_num) to (loc | start | best | end)
+
+        move consists of
+        ntfs data run allocate
+        data copy
+        ntfs data run destroy
+
+        ntfsmove = ntfscopy, ntfsdelete, ntfsrename
+        (for safety's sake)
+
+        prevent user moving $Boot, ntldr, metadata, pagefile.sys?
+
+        respect mft zone size
+
+        errors, negate count and use errno?
+
+        command line options for: location, start, best, end
+
+        pos 1 begin, pos 2 best (default), pos 3 end
+
+        FLAGS GET_SIZE? NO_ACTION (how?)
+
+        (inode, attr, dr_num, loc)
+        attr not uniq
+
+        (inode, attr, name, dr_num, loc)
+        dr_num awkward
+
+        (inode, attr, name, vcn, loc)
+
+        open (inode)
+        find (attr, name)
+        decompress and find (vcn) ->datarun dr
+        find space (vol, dr, size, loc)
+        copy data (from, to)
+        recalc attr size (new dr)
+        resize attr (inode)
+        write attr (inode)
+        mark vol (dirty)
+
+        BMMMMMMMM....................LL...........................PPPP
+
+        B boot, M mft, L log, P pagefile
+
+        0x20, 0x50, 0x80, 0xA0, 0xB0, 0xC0, 0xD0, 0xE0, 0x100
+        can all be non-resident
+
+        do we need special treatment for sparse, compressed, encrypted?
+        what about metadata?
+
+        analyse clusters
+
+        move (inode, attr, name, vcn) to (loc|start|best|end)
+                attr = AT_ALL, name = NULL, vcn 0 = whole file?
+        data copy (lcn, size, dstlcn)
+        create data runs
+        resize attr - what if it doesn't fit?
+
+        limit, couldn't move pagefile without splitting data runs
+                (have to wait for version 2)
+
+        find unused (size, loc, flags) -> data runs
+                flags = whole -> NULL on fail, split = multiple data runs
+                look for enough space for entire attribute, failing that for
+                one datarun (defrag)
+
+        alloc regions (data runs) -> all, some, none  of $Bitmap
+                fail => release regions
+                all, some, none -> cluster count?
+
+        data copy - how to validate? size (at least)
+
+        find largest unused regions (count) -> c * data run + null
+
+        ( loc | start | best | end  )
+        ( LCN | -100  | -101 | -102 ) leave room for error numbers
+
+        update_dataruns
+
+        lcn list -> dataruns - NO already decoded
+
+        encode dataruns -> bytes
+        decode dataruns (from bytes)
+        get size (dataruns) -> clusters
+        get size (dataruns) -> bytes -> how much space for attribute
+
+        set / clear bits
+
+        run (S - Start of buffer, E - End of buffer)
+                          S         E      flags
+        1) contained      |   BBB   |       BRE
+        2) leaving        |      BBB|BB     BR.
+        3) entering    BBB|BBB      |       .RE
+        4) super       BBB|BBBBBBBBB|BBB    .R.
+
+        flags
+        B - Beginning (partial)   B (high bits)
+        R - Run                   R (all bits)
+        E - End (partial)         E (low bits)
+
+        Set
+        B => (start%8)      0-7    ((0xFFFF >> n) & 0xFF) val |
+        R => ((start+7)%8)   ->    ((start+size)%8)
+        E => (end%8)        0-7    ((1 << (n+1) -1)       val |
+
+        Clear
+        B = set E mask &
+        R = set R
+        E = set B mask &
+
+        ntfsmove   - move data runs
+        ntfsdefrag - coalesce one attribute, one file
+        ntfscrunch - coalesce all free space
+                involves danger, or runlist splitting
+
+        ntfs_bitmap_set_bits_in_run FAIL if already (re)set
+
+        ntfs busybox
+
+        currently move's a file's $DATA
+        Extend to all of the file's attributes (and named attributes)
+        Extend to dir's attributes
+        Extend to metadata (special considerations)
+        Extend to attribute lists
+        Extend to multifile
+
+        endian
+
+        resize at x% - yes OK, no not enough space, no error
+
+        move file
+        foreach attr
+                move attr
+                commit
+
+        move attr
+        foreach run
+                move run
+                commit
+
+        move run
+        alloc space (bit ops)
+        commit
+        copy data
+        free space (bit ops)
+        commit - no not yet
+
+        bitmap ops
+
+        cache $Bitmap, or just that which has changed
+        have a $Bitmap bitmap (i.e. which clusters of $Bitmap have changed)
+        200GB disk -> 50MB $Bitmap -> 12KB B^2
+        struct b2 { lcn, bmp* }
+
+        actions
+                alloc space
+                copy data
+                commit FILE
+                sync
+                free space
+                sync
+
+        loc OR flags if high bit set - no too complicated
+        flags
+                start | best | end      one
+                mft | data1 | data2     one or many
+                location                none or one
+
+           MFT            Data1                 Data2
+        BMMMMMMMM....................LL...........................PPPP
+
+        don't distinguish data regions?
+
+        Region
+                Fill up
+                Fill down
+        Location
+                Fill up
+                Fill down
+
+        allow moving of logfile
+

@@ -1,0 +1,25 @@
+UTILS
+        iterate_through_mft      (fnptr *fn) (in use, not, both, bad, etc)
+        iterate_through_attrs    (fnptr *fn) (either unique, or split)
+        iterate_through_clusters (fnptr *fn) (in use, not, both)
+
+        attr = (FILE_NAME_ATTR*)((char*)rec+le16_to_cpu(rec->value_offset));
+        get_attr macro?
+        get_attr (FILE_NAME_ATTR, rec)?
+
+        allow parse_range to accept hex?
+
+        need pathname_to_inode / inum function
+
+        bool metadata (inode)
+        inum < ~10 or parent = 11 (how?)
+
+        for_each_mft_record (callback, data, flags)
+
+        for_each_attr (inode, flags = res /non-res)
+
+        utils_path_to_inode
+        , bool bAcceptAttrName) param
+        /path/to/file/$ATTRIBUTE/Name
+        integrate into ntfscat
+

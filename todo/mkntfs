@@ -1,0 +1,23 @@
+todo
+        change (char*) maths to (u8*) maths
+        usage(progname) if !progname, use EXEC_NAME
+        change zone multiplier to a %age?
+        remove extant strerror's
+        split lines: if (!(x = fn()))
+        --debug ifndef NTFS_DISABLE_DEBUG_LOGGING (warn if !enabled)
+        -l license quietly calls -V version
+        demote some errors to warnings
+        if forced, still give warnings?
+        drop one of --fast, --quick.  quietly accept the other option?
+        check that num_sectors is smaller, or equal, to size of device
+        finish mkntfs with a viable ntfs_volume that needs umounting
+        replace mkntfs_attr_lookup with lib version
+        function to get details about a file/device : summary
+        comment: parse options enables log options as it finds them
+        with -T generate random objects before variable things like clust size
+        extend, quota, objid have non-zero time on -T
+        replace logfile's enormous write buffer
+        check error paths for memleaks - automate it, how?
+        make buf_sds_init into a u8*
+        valgrind
+

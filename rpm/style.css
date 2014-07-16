@@ -1,0 +1,81 @@
+table, th, td {
+  border: 1px solid #ddf;
+}
+
+th {
+  text-align: left;
+}
+
+form {
+  margin-bottom: 0px;
+}
+
+div.header {
+  background: #ddf;
+  color: #000;
+  margin: 0 0 0.5em 0;
+  padding: 0.5em;
+}
+
+div.header h1 {
+  margin: 0;
+  font-size: 150%;
+}
+
+div.menu {
+  border: 1px solid #ddf;
+  width: 8em;
+  float: left;
+}
+
+div.menu h1 {
+  background: #ddf;
+  color: #000;
+  padding-left: 0.5em;
+  margin: 0;
+  font-size: 120%;
+}
+
+div.menu ul {
+  list-style: none;
+  padding-left: 1em;
+  margin-top: 0;
+}
+
+div.content {
+  margin-left: 8.5em;
+}
+
+div.content h2 {
+  margin-top: 0;
+  background: #ddf;
+  color: #000;
+  padding-left: 0.5em;
+}
+
+li.selected {
+  font-weight: bold;
+}
+
+input {
+  border: 1px solid #ccc;
+  padding: 2px;
+}
+
+input:focus {
+  border: 1px solid #000;
+}
+
+input.mand {
+  color: inherit;
+  background: #fee;
+}
+
+label {
+  cursor: pointer;
+  display: block;
+  width: 6em;
+  float: left;
+  clear: both;
+}
+

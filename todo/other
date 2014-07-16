@@ -1,0 +1,22 @@
+OTHER
+        new ntfs driver can overwrite existing files
+        how about overwriting linux.img used by boot.ini?
+        then you can update your lilo boot without having
+        to copy files to ntfs
+
+        if (ntfs_inode_close(ni)) {  // XXX lib doesn't check for null
+        check entire lib
+
+        decode a binary mft record into english
+
+        find_external_attr
+        144 test cases?
+        1 attr, 2 attr
+        search starts before, on 1st, on 2nd, after
+        attr is in 1st record,
+        attrs are split over 2 records,
+        attr(s) are in 2nd record
+        search by type, name, val (any combo)
+
+        ntfs_inode_open succeeds on an mft extent!
+

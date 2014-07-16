@@ -1,0 +1,65 @@
+
+:%s/\s\+$//
+:%g/^$/d
+:%g/^\.\\"/d
+:%s/^\.TH \(\i\+\) .*/====== \1 ======/
+:%s/^\.SH \(.\+\)/===== \1 =====/
+:%s/^\.SS \(.\+\)/==== \1 ====/
+:%s/\.RS\n\.sp\n.B \(.*\)\n\.sp\n\.RE/<code>\r\1\r<\/code>/
+:%s/^\.B \(.\+\)/**\1**/
+:%s/^\.I \(.\+\)/\/\/\1\/\//
+:%s/\\-/-/
+:%g/^\.nh\|\.hy/d
+:%s/^\.nf/\r<code>/
+:%s/^\.fi/<\/code>\r/
+:%s,\\fB\([^\\]\+\),\\\\**\1**,
+:%s,\\fI\([^\\]\+\),\\\\//\1//,
+:%s/\\fR//
+:%s/\\\\//
+:%s/^\.PP//
+:%s/^\.TP\n\(.*\)/\r\1\r
+:%s/\C^\.br//
+:%s/\\(bu \(.*\)\n*/  * \1\r/
+:%s/^\.sp//
+:%g/^\.RS/d
+:%g/^\.RE/d
+:%s/.BR "-f -v" ./**-f -v**./
+:%s/\C^\.BR \([^ ]*\) \([^ ]*\)$/**\1**\2/
+:%s/\C^\.BI \([^ ]*\) \([^ ]*\)$/**\1**\/\/\2\/\//
+:%s/\C^\.IR \([^ ]*\) \([^ ]*\)$/\/\/\1\/\/\2/
+:%!uniq
+/wibble
+
+5 greps
+23 seds
+1 uniq
+
+check for any unnecessary quotes
+check for any more ^\.
+check for any tables
+check the options have a newline before the description
+
+link into other man pages
+uniq blank lines
+
+"\<[[:alpha:]]*ntfs[[:alpha:]]*\>[[:space:]]*(8)"
+.BR ntfsprogs (8), to:
+[[ntfsprogs|ntfsprogs(8)]]
+
+:%s/\*\*mkntfs\*\*(8)/[[mkntfs|mkntfs(8)]]/
+:%s/\*\*ntfscat\*\*(8)/[[ntfscat|ntfscat(8)]]/
+:%s/\*\*ntfsclone\*\*(8)/[[ntfsclone|ntfsclone(8)]]/
+:%s/\*\*ntfscluster\*\*(8)/[[ntfscluster|ntfscluster(8)]]/
+:%s/\*\*ntfscp\*\*(8)/[[ntfscp|ntfscp(8)]]/
+:%s/\*\*ntfsfix\*\*(8)/[[ntfsfix|ntfsfix(8)]]/
+:%s/\*\*ntfsinfo\*\*(8)/[[ntfsinfo|ntfsinfo(8)]]/
+:%s/\*\*ntfslabel\*\*(8)/[[ntfslabel|ntfslabel(8)]]/
+:%s/\*\*ntfsls\*\*(8)/[[ntfsls|ntfsls(8)]]/
+:%s/\*\*ntfsmount\*\*(8)/[[ntfsmount|ntfsmount(8)]]/
+:%s/\*\*ntfsprogs\*\*(8)/[[:ntfsprogs|ntfsprogs(8)]]/
+:%s/\*\*ntfsresize\*\*(8)/[[ntfsresize|ntfsresize(8)]]/
+:%s/\*\*ntfsundelete\*\*(8)/[[ntfsundelete|ntfsundelete(8)]]/
+
+make sure we don't leave |'s a the beginning of lines
+(dokuwiki thinks it's a table)
+

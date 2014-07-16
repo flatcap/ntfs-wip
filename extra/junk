@@ -1,0 +1,490 @@
+/**
+ * dump_mem
+ * Dump a block of memory starting at buf. Display length bytes. The displayed
+ * index of the first byte is start
+ */
+void dump_mem(unsigned char *buf, int start, int length)
+{
+	int offs, i;
+
+	for (offs = 0; offs < length; offs += 16) {
+		printf("%6.6x  ", start + offs);
+		for (i = 0; i < 16; i++) {
+			if (i == 8)
+				printf ("- ");
+			printf(offs + i < length ? "%02X " : "   ", buf[offs+i]);
+		}
+		printf (" ");
+		for (i = 0; i < 16; i++) {
+			if (offs + i >= length)
+				putchar(' ');
+			else if (buf[offs + i] > 31 && buf[offs + i] < 127)
+				putchar(buf[offs + i]);
+			else putchar('.');
+		}
+		putchar('\n');
+	}
+}
+
+/**
+ * main - Begin here
+ *
+ * Start from here.
+ *
+ * Return:  0  Success, the program worked
+ *	    1  Error, something went wrong
+ */
+int main (int argc, char *argv[])
+{
+	int scale;
+	ntfs_volume *vol;
+	u64 user = 0;
+	u64 meta = 0;
+	u64 size = 0;
+	int total = 0;
+	int result = 1;
+	struct mft_search_ctx *m_ctx;
+	ntfs_attr_search_ctx *a_ctx;
+	runlist_element *rl;
+	ATTR_RECORD *rec;
+	int i;
+	int inuse = 0;
+	//char buffer[256];
+
+	if (!parse_options (argc, argv))
+		return 1;
+
+	utils_set_locale();
+
+	vol = utils_mount_volume (opts.device, MS_RDONLY, opts.force);
+	if (!vol)
+		return 1;
+
+	scale = vol->cluster_size_bits;
+
+	m_ctx = mft_get_search_ctx (vol);
+	m_ctx->flags_search = FEMR_IN_USE | FEMR_METADATA | FEMR_BASE_RECORD | FEMR_NOT_BASE_RECORD;
+	while (mft_next_record (m_ctx) == 0) {
+
+		//if (m_ctx->mft_num != 8) continue;
+
+		//if (m_ctx->mft_num >= 34)
+		//if (m_ctx->mft_num >= 15)
+			//break;
+
+		if (!(m_ctx->flags_match & FEMR_IN_USE)) {
+			continue;
+		}
+
+		inuse++;
+
+		//memset (buffer, 0, sizeof (buffer));
+		//utils_inode_get_name (m_ctx->inode, buffer, sizeof (buffer));
+		//printf ("inode %c %llu %s: ", (m_ctx->flags_match & FEMR_METADATA) ? 'M' : 'U', m_ctx->mft_num, buffer);
+
+		a_ctx = ntfs_attr_get_search_ctx (NULL, m_ctx->inode->mrec);
+
+		size = 0;
+		while ((rec = find_attribute (AT_UNUSED, a_ctx))) {
+
+			if (!rec->non_resident) {
+				//printf (" r[%02x]", rec->type);
+				continue;
+			}
+
+			//if (rec->type != AT_DATA) continue;
+
+			rl = ntfs_mapping_pairs_decompress (vol, rec, NULL);
+
+			//printf ("rl =");
+			for (i = 0; rl[i].length > 0; i++)
+			{
+				//printf (" (%llu,%lld,%lld)", rl[i].vcn, rl[i].lcn, rl[i].length);
+				if (rl[i].lcn >= 0) {
+					if (m_ctx->flags_match & FEMR_METADATA) {
+						//printf (" m[%02x] %llu", rec->type, rec->allocated_size);
+						meta += rl[i].length;
+					} else {
+						//printf (" u[%02x] %llu", rec->type, rec->allocated_size);
+						user += rl[i].length;
+					}
+					size += rl[i].length;
+				}
+
+			}
+			//printf ("\n");
+
+			free (rl);
+
+			//printf (" u[%02x] %llu", rec->type, rec->allocated_size);
+			//printf (" 0x%llx", rec->allocated_size);
+			//printf (" 0x%llx", rec->data_size);
+			//printf (" 0x%llx", rec->initialized_size);
+			//continue;
+
+		}
+		//printf (" %llu\n", size << scale);
+
+		ntfs_attr_put_search_ctx (a_ctx);
+
+		total++;
+	}
+	mft_put_search_ctx (m_ctx);
+
+	//printf ("meta : %13llu\n", meta << scale);
+	//printf ("user : %13llu\n", user << scale);
+	//printf ("total: %13llu\n", (meta+user) << scale);
+	//printf ("end %d\n", total);
+
+	{
+	int i;
+	u64 t = 0;
+	int x = 0;
+	int c = 1;
+	for (i = 0; i < vol->nr_clusters; i++)
+	{
+		if (utils_cluster_in_use (vol, i)) {
+			t++;
+			x |= c;
+		}
+
+		c <<= 1;
+
+		if (c == 256) {
+			//printf ("%02X", x);
+			x = 0;
+			c = 1;
+		}
+
+		//if ((i % 256) == 0)
+			//printf ("\n");
+	}
+
+	//printf ("\n");
+	//printf ("byte use: %10llu\n", t << 9);
+	//printf ("byte tot: %10llu\n", vol->nr_clusters << 9);
+	//printf ("clus use: %10llu\n", t);
+	//printf ("clus tot: %10llu\n", vol->nr_clusters);
+
+	info (vol, (meta << scale), (user << scale), ((vol->nr_clusters-meta-user) << scale), inuse);
+	}
+
+	return 1;
+
+	switch (opts.action) {
+		case act_sector:
+			if (opts.range_begin == opts.range_end)
+				Qprintf ("Searching for sector %lld\n", opts.range_begin);
+			else
+				Qprintf ("Searching for sector range %lld-%lld\n", opts.range_begin, opts.range_end);
+			/* Convert to clusters */
+			opts.range_begin >>= (vol->cluster_size_bits - vol->sector_size_bits);
+			opts.range_end   >>= (vol->cluster_size_bits - vol->sector_size_bits);
+			result = cluster_find (vol, opts.range_begin, opts.range_end);
+			break;
+		case act_cluster:
+			if (opts.range_begin == opts.range_end)
+				Qprintf ("Searching for cluster %lld\n", opts.range_begin);
+			else
+				Qprintf ("Searching for cluster range %lld-%lld\n", opts.range_begin, opts.range_end);
+			result = cluster_find (vol, opts.range_begin, opts.range_end);
+			break;
+		/*
+		case act_last:
+			printf ("Last\n");
+			break;
+		*/
+		case act_info:
+		default:
+			//info (vol);
+			break;
+	}
+
+	ntfs_umount (vol, FALSE);
+	return result;
+}
+
+
+#if 0
+	total = for_each_mft_record (vol, (femr_callback*) &info_mft_callback, &f,
+			FEMR_IN_USE | FEMR_FILE | FEMR_DIR | FEMR_METADATA);
+#endif
+// for each attribute
+
+#define FEAT_RESIDENT		1 << 0
+#define FEAT_NON_RESIDENT	1 << 1
+#define FEAT_BASE_RECORD	1 << 2
+#define FEAT_NOT_BASE_RECORD	1 << 3
+
+#define FEMR_ALL_ATTRIBUTES	0xFF
+
+typedef int (femr_callback) (ntfs_inode *inode,           void *data, int flags);
+typedef int (feat_callback) (ATTR_RECORD *attr, int size, void *data, int flags);
+
+
+/**
+ * for_each_mft_record
+ *
+ * Return: -1 Error, one or more problems
+ *          n Success, there were n matching inodes
+ */
+int for_each_mft_record (ntfs_volume *vol, femr_callback *cb, void *data, int flags)
+{
+	s64 inum;
+	s64 num;
+	int flags_match;
+	int total = 0;
+	int cont  = 1;
+	ntfs_inode *ni = NULL;
+	ntfs_attr_search_ctx *ctx;
+
+	if (!vol || !cb)
+		return -1;
+
+	num = vol->nr_mft_records;
+	for (inum = 0; inum < num; inum++) {
+		flags_match = 0;
+		int in_use = utils_mftrec_in_use (vol, (MFT_REF) inum);
+		if (in_use == -1) {
+			if (flags & FEMR_FAIL_ON_ERROR) {
+				Eprintf ("Error reading inode %lld.  Aborting.", inum);
+				return -1;
+			} else {
+				Dprintf ("Error reading inode %lld.  Continuing.", inum);
+				continue;
+			}
+		}
+
+		if (in_use) {
+			flags_match |= FEMR_IN_USE;
+
+			ni = ntfs_inode_open (vol, (MFT_REF) inum);
+			if (ni == NULL) {
+				if (flags & FEMR_FAIL_ON_ERROR) {
+					Eprintf ("Error reading inode %lld.", inum);
+					return -1;
+				} else {
+					Dprintf ("Error reading inode %lld.", inum);
+				}
+				continue;
+			}
+
+			switch (utils_is_metadata (ni)) {
+				case 0: flags_match |= FEMR_NOT_METADATA; break;
+				case 1: flags_match |= FEMR_METADATA;     break;
+				default:
+					if (flags & FEMR_FAIL_ON_ERROR) {
+						Eprintf ("Error reading inode %lld.", inum);
+						return -1;
+					} else {
+						Dprintf ("Error reading inode %lld.", inum);
+					}
+			}
+
+			/*
+			 * FEMR_BASE_RECORD
+			 * FEMR_NOT_BASE_RECORD
+			 *
+			 * what does this mean?
+			 * what does it match?
+			 * wrt to the other flags?
+			 */
+
+			/* 
+			 * To save time, we only search for attributes
+			 * if the user asked us to.
+			 */
+			if (flags & FEMR_NOT_BASE_RECORD) {
+				if (!find_first_attribute (AT_STANDARD_INFORMATION, ni->mrec))
+					flags_match |= FEMR_NOT_BASE_RECORD;
+			}
+
+			if (flags & FEMR_BASE_RECORD) {
+				if (find_first_attribute (AT_ATTRIBUTE_LIST, ni->mrec))
+					flags_match |= FEMR_BASE_RECORD;
+			}
+
+			if (flags & FEMR_FILE) {
+				if (find_first_attribute (AT_DATA, ni->mrec))
+					flags_match |= FEMR_FILE;
+			}
+
+			if (flags & FEMR_DIR) {
+				ctx = ntfs_attr_get_search_ctx (NULL, ni->mrec);
+				if (ctx) {
+					if (ntfs_attr_lookup (AT_INDEX_ROOT, I30, 4, 0, 0, NULL, 0, ctx) == 0)
+						flags_match |= FEMR_DIR;
+
+					ntfs_attr_put_search_ctx (ctx);
+				} else {
+					Eprintf ("Couldn't create a search context.\n");
+					return -1;
+				}
+			}
+		} else {		// !in_use
+			ntfs_attr *mft;
+
+			flags_match |= FEMR_NOT_IN_USE;
+
+			ni = calloc (1, sizeof (*ni));
+			if (!ni) {
+				Eprintf ("Out of memory.  Aborting."); // XXX *try* and continue?
+				return -1;
+			}
+
+			ni->mft_no = inum;
+			ni->vol    = vol;
+			ni->mrec   = malloc (vol->mft_record_size);
+			if (!ni->mrec) {
+				free (ni); // == ntfs_inode_close
+				Eprintf ("Out of memory.  Aborting."); // XXX *try* and continue?
+				return -1;
+			}
+
+			mft = ntfs_attr_open (vol->mft_ni, AT_DATA, NULL, 0);
+			if (!mft) {
+				Eprintf ("Couldn't open $MFT/$DATA: %s\n", strerror (errno));
+				// free / close
+				return -1;
+			}
+
+			if (ntfs_attr_pread (mft, vol->mft_record_size * inum, vol->mft_record_size, ni->mrec) < vol->mft_record_size) {
+				Eprintf ("Couldn't read MFT Record %lld: %s.\n", inum, strerror (errno));
+				// free / close
+				return -1;
+			}
+		}
+
+		if (ni) {
+			if (flags_match & flags) {
+				cont = (*cb) (ni, data, flags_match);
+				total++;
+			}
+
+			if (ntfs_inode_close(ni)) {
+				if (flags & FEMR_FAIL_ON_ERROR) {
+					Eprintf ("Error closing inode %lld.", inum);
+					return -errno;
+				} else {
+					Dprintf ("Error closing inode %lld.", inum);
+				}
+			}
+
+			ni = NULL;
+
+			if (cont == 0) {
+				Dprintf ("Callback asked to stop.\n");
+				break;
+			}
+
+		}
+	}
+
+	if (ni)
+		ntfs_inode_close(ni);
+
+	return total;
+}
+
+/**
+ * for_each_attribute
+ *
+ * Return: -1 Error, one or more problems
+ *          n Success, there were n matching inodes
+ */
+int for_each_attribute (ntfs_inode *inode, feat_callback *cb, void *data, int flags)
+{
+	ntfs_attr_search_ctx *ctx;
+	ATTR_RECORD *rec;
+
+	ctx = ntfs_attr_get_search_ctx (NULL, inode->mrec);
+
+	while ((rec = find_attribute (AT_UNUSED, ctx))) {
+		(*cb) (rec, rec->length, data, 0);
+
+	// FEAT_RESIDENT
+	// FEAT_NON_RESIDENT
+	// FEAT_BASE_RECORD
+	// FEAT_NOT_BASE_RECORD
+
+	}
+
+	ntfs_attr_put_search_ctx (ctx);
+	return 0;
+}
+
+/**
+ * info_attr_callback
+ */
+int info_attr_callback (ATTR_RECORD *attr, int size, void *data, int flags)
+{
+	printf (" [%02x]", attr->type);
+	return 1;
+}
+
+/**
+ * info_mft_callback
+ */
+int info_mft_callback (ntfs_inode *inode, void *data, int flags)
+{
+	struct space *f;
+
+	f = data;
+
+	printf ("inode: %llu ", inode->mft_no);
+	for_each_attribute (inode, info_attr_callback, data, FEAT_NON_RESIDENT);
+	printf ("\n");
+
+	if (flags & FEMR_METADATA) {
+	} else {
+		if (flags & FEMR_FILE) {
+		}
+
+		if (flags & FEMR_DIR) {
+		}
+	}
+
+	return 1;
+}
+
+
+
+/**
+ * test
+ */
+void test (ntfs_volume *vol)
+{
+	int type = AT_STANDARD_INFORMATION;
+	ntfs_inode *inode;
+	ntfs_attr_search_ctx *ctx;
+	int i = 3018;
+
+	inode = ntfs_inode_open (vol, i);
+	ctx = ntfs_attr_get_search_ctx (inode, NULL);
+
+	while (0 == ntfs_attr_lookup (type, NULL, 0, 0, 0, NULL, 0, ctx))
+	{
+		printf ("%02x ", ctx->attr->type);
+	}
+
+	printf ("\n");
+	ntfs_attr_put_search_ctx (ctx);
+	ntfs_inode_close (inode);
+}
+
+
+#if 0
+	test (vol);
+#endif
+#if 0
+	{
+		ntfs_inode *inode;
+		char buffer[256];
+		u64 i = 1241;
+
+		inode = ntfs_inode_open (vol, i);
+
+		utils_inode_get_name (inode, buffer, sizeof (buffer));
+		printf ("inode %lld %s\n", i, buffer);
+	}
+#endif

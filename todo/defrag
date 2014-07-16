@@ -1,0 +1,86 @@
+DEFRAG
+        find & defrag
+        info about drive
+
+        move & rearrange
+        info -> %frag'd -> ntfsinfo -> utils
+
+        in use | not
+        file | dir
+        meta | data
+        base | not
+
+        part  name     desc
+        1     info     iterate through MFT looking for frags
+        2     move     move a data run somewhere else
+        3     defrag1  make a file contiguous
+        4     defrag2  make all files contiguous
+
+        respect mft zone size
+
+        call rm /pagefile.sys /hiberfil.sys ?
+
+        largest file -> smallest?
+
+        start -> finish of mft?
+
+        the fill gaps with latest matching size
+
+        consolidate free space
+
+        allow moving of mft (after clearing mft zone)
+        excluding sizeof(mirr)
+        update mirr
+
+        find_logfile()?
+        find_pagefile()?
+
+        create a progress file in the root directory for safety purposes
+
+        From Diskeeper
+
+        Volume Local Disk (C:)
+            Volume size                   = 7.84 GB
+            Cluster size                  = 4 KB
+            Used space                    = 5.34 GB
+            Free space                    = 2.50 GB
+            Percent free space            = 31 %
+
+        Volume fragmentation
+            Total fragmentation           = 0 %
+            File fragmentation            = 0 %
+            Free space fragmentation      = 0 %
+
+        File fragmentation
+            Total files                   = 44 723
+            Average file size             = 157 KB
+            Total fragmented files        = 7
+            Total excess fragments        = 12
+            Average fragments per file    = 1.00
+
+        Pagefile fragmentation
+            Pagefile size                 = 384 MB
+            Total fragments               = 1
+
+        Folder fragmentation
+            Total folders                 = 2 592
+            Fragmented folders            = 1
+            Excess folder fragments       = 2
+
+        Master File Table (MFT) fragmentation
+            Total MFT size                = 85 MB
+            MFT record count              = 47 386
+            Percent MFT in use            = 54 %
+            Total MFT fragments           = 3
+
+        -------------------------------------------------------------
+        Fragments  File Size Most fragmented files
+        5          1 KB      \WINDOWS\SYSTEM32\CONFIG\DEFAULT.LOG
+        4          24 KB     \WINDOWS\SYSTEM32\CONFIG\SOFTWARE.LOG
+        3          12 KB     \System Volume Information\_restore{E...
+        2          1 KB      \Documents and Settings\rich.PHAROS1\
+        2          284 KB    \WINDOWS\Debug\UserMode\userenv.log
+        2          1 KB      \Documents and Settings\NetworkServic...
+        2          18 KB     \System Volume Information\_restore{E...
+        2          1 KB      \Documents and Settings\LocalService\...
+

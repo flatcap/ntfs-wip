@@ -1,0 +1,58 @@
+WIPE
+        estimation phase quick and dirty?
+
+        Working |/-\  59%  Wiping unused disk space with: 0x00
+        callback from doing routines - tie in with resize
+        rip off code from openssh (scales to window)
+
+        --progress (meter)
+        --chkdsk - flag volume dirty
+        --no-wait
+        --no-dirty
+
+        Name    Speed   size    %age    Measure
+        ------------------------------------------------
+        dir       1     300       5     proportion of file?
+        file      2     5000      5     mft size
+        log       3     4MB      10     file size
+        mft       4     5MB      10     mft size
+        page      5     100MB    30     file size
+        clust     6     500MB+   40     bitmap size
+
+        Name    Trigger
+        ------------------------------------------------
+        dir     !extent, for $I30-$INDEX_ALLOC
+        file    !extent, for all $DATA
+        log     !extent, inode = 2
+        mft     for all records
+        page    !extent, name = pagefile.sys, parent = 5
+        clust   !extent, for all unset bits
+
+        Name    Info        Write
+        ------------------------------------------------
+        dir     dirs        bytes
+        file    files       bytes
+        log     size        -
+        mft     records     tails / empty
+        page    size        -
+        clust   clusters    used / not
+
+        s64 function (volume, byte, action, updates)
+
+        < 0 = error, 0+ = bytes wiped
+        action = info, test, write
+        updates = number of calls to make to update_progress_meter
+
+        external return code?
+                0 did nothing
+                1 wiped safely
+                2 forced to wipe
+
+        wipe a range of clusters/sectors (if not in use)
+
+        extension
+        ntfsshred = ntfwipe for an existing file
+        (optionally followed by delete)
+        needs to iterate through all non-resident attributes
+
+        wipe needs a wipe resident attribute function

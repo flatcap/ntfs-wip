@@ -1,0 +1,55 @@
+CHKDSK
+        rip out of resize
+
+        1) check bitmap
+        2) check directory structure
+        3) check security info (how?)
+
+        1) check boot record
+        2) check mft and mirr match
+        3) check all mft file records
+        4) check mft bitmap against file records
+        5) look for circular directory references
+
+        option to look for bad sectors (and optionally do something about them)
+
+        two sets of flags?  to_check flags and to_fix_flags?
+
+        can we validate any other metadata?
+        attrdef, upcase?
+
+        1 and 2 need separating out of libntfs and the mount sequence
+
+        /f - what can we safely fix?
+        fix boot record
+        find which of mft and mirr is correct?  and overwrite the other
+        replace bad mft records with BAAD?
+        try and recover data from BAAD records?
+        fix bitmap set/reset nec bits
+
+        reorder the above, i.e. mft record check before bitmap
+
+        Error Message:
+        CHKDSK detected minor inconsistencies on the drive.
+        Explanation:
+        Chkdsk found file system inconsistencies on the volume which do not
+        affect file system usage.
+        User Action:
+        No user action is needed. The inconsistencies can be safely ignored.
+
+        Corrupt Attribute Definition Table. CHKDSK is assuming the default.
+        likewise Upcase
+
+        Do you want AUTOCHK to be run the next time that the system restarts?
+        [Y] text
+
+        invalid timestamps
+
+        Two files (or directories) attempted to access the same disk space.
+
+        check attributes sizes and (non-)resident-ness against attrdef
+
+        lots of flags   
+                to_check_flags
+                to_fix_flags
+

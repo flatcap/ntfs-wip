@@ -1,0 +1,22 @@
+CAT
+        file to stdout
+
+        ntfscat device file
+        -V  --version    Display version information
+        -h  --help       Display this help
+        -i  --inode N    display inode n
+
+        cat dev file {file} ?
+        -F, --file
+        -I, --inode
+        -A, --attribute
+        -N, --name
+
+        parse attr name to number (using $AttrDef)
+        $DATA, DATA, 0x80, 160
+        use name or uniq prefix?
+
+        parse list of files?
+
+        file, pathname, file/attr, file/attr(name)
+

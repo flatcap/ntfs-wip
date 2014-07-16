@@ -1,0 +1,43 @@
+#!/bin/bash
+
+STAMP=/tmp/watcher.$$
+WAIT=1
+TARGET="$1"
+RUNSCRIPT="$2"
+shift 2
+WATCHLIST="$* $RUNSCRIPT"
+
+title ()
+{
+	echo -ne "\033]0;$*\007"
+}
+
+
+touch $STAMP
+
+while :; do
+	REBUILD=FALSE
+	for i in $WATCHLIST; do
+		if [ $i -nt $STAMP ]; then
+			touch -r $i $STAMP
+			REBUILD=TRUE
+		fi
+	done
+
+	if [ $REBUILD = "TRUE" ]; then
+		title Building..
+		reset
+		make -s tags
+		make -s $TARGET > /tmp/watcher-build.$$ 2>&1
+		if [ -s /tmp/watcher-build.$$ ]; then
+			title `grep -i -e error -e warning /tmp/watcher-build.$$`
+			cat /tmp/watcher-build.$$
+		else
+			title OK
+			source $RUNSCRIPT
+		fi
+		rm -f /tmp/watcher-build.$$
+	fi
+	sleep $WAIT
+done
+

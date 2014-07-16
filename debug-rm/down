@@ -1,0 +1,10 @@
+#!/bin/bash
+
+DIR=fuse
+
+[ ! -d $DIR ] && exit 0
+
+fusermount -q -u $DIR
+
+rmdir --ignore-fail-on-non-empty $DIR
+

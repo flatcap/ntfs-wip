@@ -1,0 +1,20 @@
+digraph "bla" {
+	graph [ rankdir = "LR", bgcolor = white ];
+	node [ shape = record, color = black, fillcolor = lightcyan, style = filled ];
+
+	volume [ label = "ntfs_volume|dev\lvol_name\lstate\lvol_ni\lmajor_ver\lminor_ver\lflags\lsector_size\lsector_size_bits\lcluster_size\lmft_record_size\lindx_record_size\lcluster_size_bits\lmft_record_size_bits\lindx_record_size_bits\lmft_zone_multiplier\lmft_data_pos\lmft_zone_start\lmft_zone_end\lmft_zone_pos\ldata1_zone_pos\ldata2_zone_pos\lnr_clusters\llcnbmp_ni\llcnbmp_na\lmft_lcn\lmft_ni\lmft_na\lmftbmp_na\lmftmirr_size\lmftmirr_lcn\lmftmirr_ni\lmftmirr_na\lupcase\lupcase_len\lattrdef\lattrdef_len\lprivate_data\lprivate_bmp1\lprivate_bmp2\l" ];
+
+	inode [ label = "ntfs_inode|$Bitmap\l$MFT\l$MFTMirr\l|mft_no\lmrec\lvol\lstate\lflags\lattr_list_size\lattr_list\lnr_extents\lextent_nis\lbase_ni\lprivate_data\lref_count\ldata_size\lallocated_size\lcreation_time\llast_data_change_time\llast_mft_change_time\llast_access_time\l" ];
+
+	attr [ label = "ntfs_attr|$Bitmap/$DATA\l$MFT/$DATA\l$MFT/$Bitmap\l$MFTMirr/$DATA\l|rl\lni\ltype\lname\lname_len\lstate\lallocated_size\ldata_size\linitialized_size\lcompressed_size\lcompression_block_size\lcompression_block_size_bits\lcompression_block_clusters\l" ];
+
+	mrec [ label = "MFT_RECORD|magic\lusa_ofs\lusa_count\llsn\lsequence_number\llink_count\lattrs_offset\lflags\lbytes_in_use\lbytes_allocated\lbase_mft_record\lnext_attr_instance\l" ];
+
+	runlist [ label = "runlist|vcn\llcn\llength\l" ];
+
+	"volume" -> "inode"
+	"volume" -> "attr"
+	"inode" -> "mrec"
+	"attr" -> "runlist"
+};
+

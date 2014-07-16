@@ -1,0 +1,40 @@
+
+check the output by hand, especially the end markers
+
+identify more test cases
+e.g. a run spanning a hole-notmap region
+
+valgrind everything again
+configure test for valgrind?
+
+test merges with src & dst reversed
+
+remove (or at least quantify) "magic"
+
+wrap test code to 80 chars
+
+
+
+two fast cases:
+  empty
+  15
+
+ls, stat
+back merge performance
+vfs for write
+
+merge holes
+skip leading and trailing holes in src
+
+BIG runlists that require more than one page of mem
+
+test:
+empty case
+just an end marker in dst (2 cases)
+
+debugging code in runlist code
+
+//FIXME we extend hole, but we should create unmapped regions
+
+{ runlist_element *re = dst; int len; for (len = 0; re[len].length; len++) ; printf ("length = %d\n", len+1); }
+fprintf (stderr, "d %d(%d)\ts %d\tl %d\tr %d\tm %d\n", dsize, loc, ssize, left, right, magic);

@@ -1,0 +1,58 @@
+remove <hr> ----
+break at \\
+remove mailto:
+remove unicode spaces
+lots of missing Spanish letters
+"utf8=true" "-o utf8=true"
+lists are <space><space>*<space>
+put whitespace around titles and top links
+whitespace around lists
+http that aren't links
+remove code type
+check all other foreign letters from the -en faq
+tidy email addresses
+sourceParage.net => sourceforge
+remove titles for key images
+put red images on separate lines
+put links on separate lines (except tables and lists)
+-o fmask -o dmask
+excessive spaces
+tidy <code> blocks remove unnessary space
+fix code/file
+remove _most_ leading space in <code>
+fix tables
+fix graphics
+raise heading levels except the key
+\\ before empty lines or _on_ empty lines
+wrap lines
+fix toc
+fix compile link
+fix ntfs rpm link
+fix dev mailing list address
+fix downloads link
+fix ntfs docs links
+fix resize page link
+fix status page links
+fix project links
+make all links :globalscope
+fix internal links
+check for [[ spaces | in links ]]
+tidy duplicate hrefs
+point addresses to the forums
+
+~~NOTOC~~
+set image sizes
+trailing space
+leading space
+uniq
+
+--------------------------------------------------------------------------------
+
+look for any footers
+
+check email-address images
+
+move faqs to separate namespace
+sort out flags
+
+ls $MFT

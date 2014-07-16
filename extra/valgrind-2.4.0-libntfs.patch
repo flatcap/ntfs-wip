@@ -1,0 +1,57 @@
+diff -x CVS -urN valgrind-2.4.0-clean/coregrind/vg_syscalls.c valgrind-2.4.0-rich/coregrind/vg_syscalls.c
+--- valgrind-2.4.0-clean/coregrind/vg_syscalls.c	2005-03-23 10:22:03.000000000 +0000
++++ valgrind-2.4.0-rich/coregrind/vg_syscalls.c	2005-11-06 18:23:31.000000000 +0000
+@@ -3601,6 +3601,19 @@
+       break;
+    }
+ 
++   case VKI_HDIO_GETGEO:
++      // actually a struct hd_geometry
++      SYS_PRE_MEM_WRITE( "ioctl(HDIO_GETGEO)", arg3, sizeof(unsigned long long) );
++      break;
++
++   case VKI_BLKGETSIZE64:
++      SYS_PRE_MEM_WRITE( "ioctl(BLKGETSIZE64)", arg3, sizeof(unsigned long long) );
++      break;
++
++   case VKI_BLKSSZGET:
++      SYS_PRE_MEM_WRITE( "ioctl(BLKSSZGET)", arg3, sizeof(unsigned long long) );
++      break;
++
+    default: {
+       /* We don't have any specific information on it, so
+ 	 try to do something reasonable based on direction and
+@@ -4178,6 +4191,19 @@
+       break;
+    }
+ 
++   case VKI_HDIO_GETGEO:
++      // actually a struct hd_geometry
++      POST_MEM_WRITE( arg3, sizeof(unsigned long long) );
++      break;
++
++   case VKI_BLKGETSIZE64:
++      POST_MEM_WRITE( arg3, sizeof(unsigned long long) );
++      break;
++
++   case VKI_BLKSSZGET:
++      POST_MEM_WRITE( arg3, sizeof(unsigned long long) );
++      break;
++
+    default: {
+       /* We don't have any specific information on it, so
+ 	 try to do something reasonable based on direction and
+diff -x CVS -urN valgrind-2.4.0-clean/include/x86-linux/vki_arch.h valgrind-2.4.0-rich/include/x86-linux/vki_arch.h
+--- valgrind-2.4.0-clean/include/x86-linux/vki_arch.h	2005-03-11 06:28:14.000000000 +0000
++++ valgrind-2.4.0-rich/include/x86-linux/vki_arch.h	2005-11-06 18:25:04.000000000 +0000
+@@ -538,6 +538,10 @@
+ 
+ #define VKI_FIOASYNC	0x5452
+ 
++#define VKI_BLKGETSIZE64	_VKI_IOR(0x12,114,size_t)
++#define VKI_BLKSSZGET		_VKI_IO(0x12,104)
++#define VKI_HDIO_GETGEO		0x301
++
+ //----------------------------------------------------------------------
+ // From linux-2.6.8.1/include/asm-i386/poll.h
+ //----------------------------------------------------------------------

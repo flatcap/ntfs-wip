@@ -1,0 +1,158 @@
+GENERAL
+        Standard options
+        -n  --no-action  Do not write to disk
+        -f  --force      Use less caution
+        -q  --quiet      Less output
+        -v  --verbose    More output
+        -V  --version    Display version information
+        -h  --help       Display this help
+
+        silently accept "-?" as help?
+
+        Others?
+        -x = hex, rather than decimal
+        -h = human 2^10
+        -H = SI 10^3
+
+        -d device (for all?)
+
+        cygwin-ise all options
+
+        change list from -X  --ex to -X,--ex?
+
+        --version and --usage - print bug email and homepage
+
+        --version
+                copyright (c) me
+                copyright (c) you
+                license
+
+        --offset for non-volumes (std option)
+
+        std vol flags --no-action, --version, etc
+        parse_std_option (opt) - sets std vol flags
+        retval 0 no, 1 yes, -1 error
+
+        --no-action = (only cache metadata)
+
+        volume - pass to all functions
+        don't use ntfsdevice, use ntfsvolume?
+
+        log flags - debug, normal, verbose, quiet, error
+
+        output_callback (vol, function, line, level, msg)
+
+        prefix error messages (Eprintf) with "ERROR:"?
+        prefix debug messages (Dprintf) with "DEBUG:"?
+        what about perror?
+
+        ntfs_inode_open new error
+        E_RECORD_NOT_IN_USE implies ntfs_perror
+
+        ntfs_perror decode our error numbers
+
+        if (verbose > 1) debug++;
+        if we have a printf callback this is easy and configurable
+
+        Change parse_options comment to "parse and validate options"
+
+        ntfsprogs.8
+                explain standard options
+                glossary
+                explain resident / non-resident
+                explain MB = 10^6 not 2^20
+                full attribute descriptor /directory/filename/$ATTRIBUTE(NAME)
+
+        change man pages to display, e.g
+        [ -e | -p ] [-v] etc
+
+        if (argc == 1) => no warnings, just usage - for all => failsafe
+
+        can we preprocess ATTR_RECORD, BOOT_SECTOR
+        sorting out endianness postread/prewrite?
+
+        ENDIANNESS
+
+        CONST STRUCTS
+
+        people memset'ing opts, when static would do
+
+        recheck #includes
+
+        ntfsinfo -> ntfsdiff?
+
+        O_RDONLY = write fails
+        O_NOWRITE = write succeeds (but doesn't do anything)
+        or replace io layer with a "no-action" version
+        what about reads to verify what was written?
+
+        change all programs so main parses stuff and passes a volume
+        and an options struct to do_the_work().  then other programs
+        could call that with an already open volume
+
+        each program should have a .h and a uniquely named opts struct
+        ntfsX.h has struct optsX
+        ntfsX.c has do_X and main (#ifdef STANDALONE_X)
+
+        replace opts.info, opts.noaction, opts.wipe with opts.action?
+        each optX has enums
+        optX_action_none, optX_action_error, optX_action_x, optX_action_y
+
+        how do we replace the io layer?
+
+        create shared libs for:
+                ntfs low-level
+                ntfs tools
+        create programs to call the tools (shells)
+
+        NTFS env var for progs?
+        ignore errors?
+        or complain: error in option in *env*
+
+        proto: int (print_fn)(const char *format, ...);
+        static print_fn Eprintf = printf;
+
+        website ntfsdoc -> margin
+        use margin for images [!] and [lightbulb], etc
+
+        move routines from using ATTR_RECORD* to ntfs_attribute*?
+
+        Eprintf -> RED (escape seq)
+
+        check all tools with a virtual device
+
+        -d,--device or just pick device by position
+
+        pass in FILE stream to output on
+
+        why use shared libs?  You'll only ever use one tool at a time
+
+        other users?  compile in our code? how?
+
+        call by exec
+        call by load
+        call by compile
+
+        parse $Bitmap into a sorted balanced tree
+
+        sorted by size, then by offset
+
+        => need for slab allocator
+
+        opts.stdout
+        opts.stderr
+        opts.stdin
+        if null default to the real ones
+
+        try sharing a static and normal var in the library
+        set & get from several different progs
+
+        add a length parameter to a runlist
+
+        ntfs_clear_bad
+        clear bad blocks, see
+        http://www.bodden.de/misc/ntfsrecovery/body_bad_sector_recovery_on_ntfs.php
+        http://www.dposoft.net
+
+        man pages to docbook
+

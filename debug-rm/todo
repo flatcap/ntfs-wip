@@ -1,0 +1,133 @@
+helper functions to rearrange arrays
+	param: element size
+	param: zero new elements?
+	insert n spaces
+	remove n elements
+	resize array
+	blocking factor (alloc blocks of n elements)
+Hard-code as arrays of pointers?
+Turn into a macro, for speed?
+
+ntfs_inode_open_raw sets some flags:
+	IN_USE | NOT_IN_USE
+	BASE | EXTENT
+	FIXUP_OK | FIXUP_FAIL
+
+when deleting a key, it's inode must be attached to either the dir
+(if this is a single transaction), or the volume (for multi txns).
+
+if adding to a node and it becomes full, AND the new key collates
+after the rest of the contents, then: don't split the node evenly.
+reason: you're probably creating a list of items in alphabetical order!
+
+check reallocs
+
+dt add/remove MUST deal with inode lists itself
+
+utils_pathname_to_inode2
+	.. => up a level
+	leading / => start at dot
+	otherwise start from supplied dir
+
+reinstate checks in ntfs_dt_del_child (can't delete dirs, sysfiles, etc)
+
+for dead dts, only remember the VCN
+mem leaks, commit, move truncate to commit
+
+bmp cache.  bmp_get_data (READ_ONLY) => cache
+bmp_get_data (READ_WRITE) => data++
+wouldn't work for multi-threaded envs
+need a changed[] flag for each data block
+
+debug: du (vol|dir|dt|bmp) = how much mem use for those structs (recurse)
+
+debug: chkdsk (struct) - check for integrity
+try reading every byte and see if valgrind complains
+
+debug: print (struct)
+human-readable dump of tree
+
+what about Win32 + DOS names
+
+fill mftrec first
+expands into first rec, ! parent
+tends to have two top keys, because of growth pattern
+can't free alloc until all later records are empty
+won't flatten structure unnecessarily
+won't write to disk unnecessarily
+
+FREE(X)
+	free(x);			normal
+	free(x); x = NULL;		testing
+	free(x); x = 0xdeaddead;	debug
+	
+bitmap tests
+	whole bytes
+	bit
+	set bit
+	clear bits
+	set bits are only set bits      } buffer zone of 1's, 0's
+	clear bits are only clear bits  }
+	byte boundaries
+	cluster boundaries
+	set single bit
+	clear single bit
+
+directory tests
+	delete
+		remove from full leaf
+		remove median from leaf
+		remove last from leaf
+		remove from full non-leaf
+		remove from median non-leaf
+		remove last from non-leaf
+		remove requiring directory truncation
+		remove requiring ialloc removal
+	add
+		add to empty leaf
+		add to median leaf
+		add to full leaf
+		add requiring reusing an INDX
+		add requiring a new INDX
+		add requiring creation of ialloc
+		add requiring only iroot change
+	
+	Num	Key	Leaf	Fill	Root	Alloc	Bitmap	Notes
+
+	repeat for every version of NTFS: NT4, 2K, XP, 2K3, Longhorn
+	repeat for all index sizes: 4096, 2048
+
+--time=DATE	set modification times to DATE
+		useful for testing
+
+make the --time option --lib-time - a global for the library?
+--lib-debug turn on all debug messages
+
+/**
+ * ntfs_bmp_find
+ * bmp: bitmap to work with
+ * origin: bit offset of where to start looking
+ *         0 = beginning
+ *         -1 = end
+ * value: what to look for
+ *         0 = look for free space
+ *         1 = look for used space
+ * size: number of blocks to find
+ *         n = search for block of n contiguous "value"
+ * flags: extras
+ *         SEARCH_BACKWARDS
+ *         WRAP_AT_END
+ *         FREE_UNUSED_BUFFERS
+ */
+static int ntfs_bmp_find (struct ntfs_bmp *bmp, s64 origin, u8 value, s64 size, u8 flags)
+{
+	return 0;
+}
+
+create random files:
+for ((i=0;i<512;i++)) do dd if=/dev/urandom bs=$((10*$RANDOM+$RANDOM)) count=1 of=file$i; done
+
+check the length of all attributes on all OSs.
+Chris found that $INDEX_ROOT was often too long
+i.e. check that header length + attr length = attr record length
+

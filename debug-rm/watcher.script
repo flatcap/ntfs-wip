@@ -1,0 +1,17 @@
+#!/bin/bash
+
+DISK=y
+#VAL=valgrind
+
+cat ~/work/images/y.add2 > y
+#cat ~/work/images/y.full > y
+
+$VAL ntfsrm $DISK add/file001
+#$VAL ntfsrm $DISK add/file002
+#$VAL ntfsrm $DISK add/file003
+#$VAL ntfsrm $DISK add/file004
+#$VAL ntfsrm $DISK add/file005
+#$VAL ntfsrm $DISK add/file006
+#$VAL ntfsrm $DISK add/file007
+#$VAL ntfsrm $DISK add/file008
+

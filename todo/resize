@@ -1,0 +1,11 @@
+RESIZE
+        $Bad isn't indexed (not the unnamed $DATA)
+        so don't need to look through $INDEX_ROOT/ALLOC
+        However $Bitmap...
+
+        resize -s x%
+
+        how much data needs moving to resize at 75%?
+
+        resize clusters
+

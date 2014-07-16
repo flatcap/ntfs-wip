@@ -1,0 +1,97 @@
+INFO
+        info about a file / dir / volume
+        + number of files / dirs
+        + rest of $Boot info, e.g. MFT, Mirr location
+
+        remove fixup options for certain metadata
+        (add option for it)
+
+        Volume info
+                Size of volume
+                Cluster size
+                Mft location
+                Mft mirr location
+                Mft record size
+                Index record size
+                Volume serial number
+
+        Bitmap info
+                Size of volume
+                Cluster size
+                Total number of clusters
+                Number of clusters in use
+                %age in use
+
+        MFT info
+                MFT Size
+                MFT Offset
+                Total Number of Records
+                Number of Records in use
+                %age in use
+                runlist?
+
+        MFT Record info
+                Record Number
+                Base Record Number
+                Attributes: 0x10 0x30 ...
+
+        Attribute (dump)
+                Header
+                000000  46 49 4C 45 2A 00 03 00 - 40 45 12 00 00 00 00 00
+                000010  01 00 01 00 30 00 01 00 - 88 01 00 00 00 04 00 00
+                000020  00 00 00 00 00 00 00 00 - 04 00 02 00 00 00 00 00
+
+                Standard Information
+                000030  10 00 00 00 48 00 00 00 - 00 00 00 00 00 00 00 00
+                000040  30 00 00 00 18 00 00 00 - 30 F8 AB BA 4B 9D C2 01
+                000050  60 7F AD BA 4B 9D C2 01 - 60 7F AD BA 4B 9D C2 01
+                000060  60 7F AD BA 4B 9D C2 01 - 20 00 00 00 00 00 00 00
+                000070  00 00 00 00 00 00 00 00 -
+
+                (optionally with(out) ascii view)
+
+        Attribute (info)
+                Header info
+                        ...
+                Standard Information info
+                        ...
+                Filename info
+                        ...
+                Security Information info
+                        ...
+                Data info
+                        ...
+
+        File info
+                Name(s)
+                Date/time(s)
+                Data streams
+                Attributes
+                Size(s)
+
+        Directory info
+                Like file info
+                Index info
+                Number of children
+
+        Index info
+                Record size
+                Total number of records
+                Number of records in use
+                %age of records in use
+
+        Special output filters for metadata files' data
+        e.g. $AttrDef/$DATA
+
+        printf (int indent, ...)
+
+        flags everywhere, decode
+
+        0x90 num entries
+        0xA0 num INDX (in use)
+        option list contents of dirs?
+
+        option sizes like df -h?
+        option numbers in hex?
+        option decompress runs
+

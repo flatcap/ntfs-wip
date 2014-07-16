@@ -1,0 +1,396 @@
+parse_options
+	version
+	usage
+
+ntfs_dir_print
+	ntfs_name_print
+	ntfs_dir_print
+
+ntfs_dt_print
+	ntfs_dt_print
+
+ntfs_inode_dir_map
+	ntfs_inode_dir_map
+
+ntfs_inode_open2
+	ntfs_inode_dir_map
+
+ntfs_bmp_commit
+	ntfs_bmp_rollback
+
+ntfs_bmp_free
+	ntfs_bmp_rollback
+
+ntfs_bmp_get_data
+	ntfs_bmp_add_data
+
+ntfs_bmp_set_range
+	ntfs_bmp_get_data
+
+ntfs_bmp_find_last_set
+	ntfs_bmp_get_data
+
+ntfs_ie_dump
+	ntfs_ie_get_vcn
+	ntfsinfo_time_to_str
+	ntfsinfo_time_to_str
+	ntfsinfo_time_to_str
+	ntfsinfo_time_to_str
+	ntfs_name_print
+
+ntfs_ie_set_name
+	ntfs_ie_set_vcn
+	ntfs_ie_get_vcn
+
+ntfs_ie_remove_name
+	ntfs_ie_set_vcn
+	ntfs_ie_get_vcn
+
+ntfs_ie_test
+	ntfs_ie_create
+	ntfs_ie_remove_name
+	ntfs_ie_remove_vcn
+	ntfs_ie_set_name
+	ntfs_ie_set_name
+	ntfs_ie_set_vcn
+	ntfs_ie_copy
+	ntfs_ie_dump
+	ntfs_ie_dump
+	ntfs_ie_dump
+	ntfs_ie_dump
+	ntfs_ie_dump
+	ntfs_ie_dump
+
+ntfs_dt_free
+	ntfs_dt_free
+	ntfs_inode_close2
+
+ntfs_dt_rollback
+	ntfs_dt_rollback
+	ntfs_dt_free
+	ntfs_inode_close2
+	ntfs_inode_close2
+
+ntfs_dt_commit
+	ntfs_dt_commit
+
+ntfs_dt_count_root
+	ntfs_dt_alloc_children
+	ntfs_ie_get_vcn
+
+ntfs_dt_count_alloc
+	ntfs_dt_alloc_children
+	ntfs_ie_get_vcn
+
+ntfs_dt_alloc
+	ntfs_dt_count_alloc
+	ntfs_dt_count_root
+
+ntfs_dt_find
+	ntfs_dt_find
+	ntfs_dt_alloc
+	ntfs_ie_get_vcn
+
+ntfs_dt_find2
+	ntfs_dt_alloc
+	ntfs_dt_find2
+	ntfs_ie_get_vcn
+
+ntfs_dt_find3
+	ntfs_dt_find3
+
+ntfs_dt_find4
+	ntfs_dt_find4
+	ntfs_dt_alloc
+	ntfs_ie_get_vcn
+
+ntfs_dt_find_all
+	ntfs_dt_alloc
+	ntfs_dt_find_all
+	ntfs_ie_get_vcn
+
+ntfs_dt_initialise
+	ntfs_dt_alloc_children2
+
+ntfs_dt_transfer
+	ntfs_dt_alloc_children2
+	ntfs_dt_alloc_children2
+	ntfs_dt_root
+	ntfs_dt_freespace_alloc
+	ntfs_dt_freespace_root
+
+utils_free_non_residents3
+	ntfs_bmp_set_range
+
+utils_free_non_residents2
+	utils_free_non_residents3
+
+utils_mftrec_mark_free3
+	ntfs_bmp_set_range
+
+utils_mftrec_mark_free5
+	ntfs_bmp_set_range
+
+ntfs_mft_remove_attr
+	utils_free_non_residents3
+
+ntfs_dt_root_replace
+	ntfs_mft_resize_resident
+
+ntfs_dt_root_remove
+	ntfs_dt_alloc_children2
+	ntfs_mft_resize_resident
+	ntfs_name_print
+	ntfs_name_print
+
+ntfs_dt_alloc_remove
+	ntfs_dt_alloc_children2
+	ntfs_bmp_set_range
+	ntfs_name_print
+	ntfs_name_print
+
+ntfs_dt_root_add
+	ntfs_mft_resize_resident
+	ntfs_mft_free_space
+	ntfs_dt_find3
+
+ntfs_dt_alloc_add
+	ntfs_dt_find3
+
+ntfs_dt_remove_alloc
+	ntfs_dt_count_alloc
+	ntfs_dt_free
+	ntfs_name_print
+
+ntfs_dt_remove_root
+	ntfs_dt_count_root
+	ntfs_dt_free
+	ntfs_mft_resize_resident
+	ntfs_name_print
+
+ntfs_dt_remove
+	ntfs_dt_root
+	ntfs_dt_remove_alloc
+	ntfs_dt_remove_root
+
+ntfs_dt_del_child
+	ntfs_dt_find2
+	ntfs_inode_open2
+	ntfs_dt_remove
+	utils_free_non_residents
+	utils_mftrec_mark_free2
+	utils_mftrec_mark_free
+	ntfs_inode_open2
+	ntfs_inode_close2
+	ntfs_inode_close2
+
+ntfs_dt_add_alloc
+	ntfs_dt_alloc_children2
+
+ntfs_dt_add_root
+	ntfs_dt_alloc_children2
+	ntfs_mft_resize_resident
+	ntfs_mft_free_space
+
+ntfs_dt_add
+	ntfs_dt_find3
+
+ntfs_dt_add2
+	ntfs_name_print
+	ntfs_dt_root
+	ntfs_dt_root
+	ntfs_dt_root
+	ntfs_dt_transfer
+	ntfs_ie_copy
+	ntfs_ie_set_vcn
+	ntfs_dt_add_alloc
+	ntfs_dt_add_root
+	ntfs_dt_alloc_remove
+	ntfs_dt_initialise
+	ntfs_dt_root_remove
+	ntfs_dt_freespace_alloc
+	ntfs_dt_freespace_root
+
+ntfs_dir_rollback
+	ntfs_bmp_rollback
+	ntfs_dir_rollback
+	ntfs_dt_rollback
+
+ntfs_dir_truncate
+	ntfs_bmp_get_data
+	ntfs_ie_copy
+	ntfs_ie_remove_vcn
+	ntfs_bmp_find_last_set
+	ntfs_bmp_free
+	ntfs_dt_rollback
+	ntfs_dt_root_replace
+	ntfs_mft_remove_attr
+	ntfs_mft_remove_attr
+
+ntfs_dir_commit
+	ntfs_bmp_commit
+	ntfs_dir_commit
+	ntfs_dt_commit
+	ntfs_dir_truncate
+
+ntfs_dir_free
+	ntfs_bmp_free
+	ntfs_dir_free
+	ntfs_dir_rollback
+	ntfs_dt_free
+	ntfs_inode_close2
+
+ntfs_dir_alloc
+	ntfs_bmp_alloc
+	ntfs_inode_open2
+	ntfs_dir_free
+	ntfs_inode_close2
+
+ntfs_dir_find
+	ntfs_dt_alloc
+	ntfs_dt_find
+
+ntfs_dir_find2
+	ntfs_dt_alloc
+	ntfs_dir_alloc
+	ntfs_dt_find2
+	ntfs_dir_add
+	printf
+
+utils_volume_commit
+	ntfs_bmp_commit
+	ntfs_bmp_commit
+	ntfs_dir_commit
+
+utils_volume_rollback
+	ntfs_bmp_rollback
+	ntfs_bmp_rollback
+	ntfs_dir_rollback
+
+utils_pathname_to_mftref
+	ntfs_dir_alloc
+	ntfs_dir_find
+	ntfs_dir_add
+
+ntfs_umount2
+	ntfs_bmp_free
+	ntfs_dir_free
+	utils_volume_rollback
+
+utils_mount_volume2
+	ntfs_dt_alloc
+	ntfs_dir_alloc
+	ntfs_dt_find2
+	ntfs_dt_find2
+	ntfs_dt_find2
+	ntfs_dt_find2
+	ntfs_umount2
+	ntfs_umount2
+	ntfs_umount2
+	ntfs_umount2
+	ntfs_umount2
+	ntfs_umount2
+	ntfs_bmp_alloc
+	ntfs_bmp_alloc
+
+utils_pathname_to_inode2
+	ntfs_dir_find2
+	ntfs_dt_find2
+
+ntfsrm
+	ntfs_dir_alloc
+	utils_pathname_to_mftref
+	ntfs_dir_free
+	ntfs_dt_del_child
+
+ntfs_index_dump_alloc
+	ntfs_index_dump_alloc
+	ntfs_name_print
+
+ntfs_index_dump
+	ntfs_index_dump_alloc
+	ntfs_name_print
+
+ntfs_file_add
+	ntfs_dt_find2
+	ntfs_dir_alloc
+	ntfs_ie_copy
+	ntfs_ie_set_name
+	utils_pathname_to_mftref
+	ntfs_dir_free
+	ntfs_dt_add
+
+ntfs_file_remove
+	ntfs_ie_copy
+	ntfs_ie_remove_vcn
+	ntfs_name_print
+	ntfs_name_print
+	ntfs_name_print
+	ntfs_name_print
+	ntfs_name_print
+	ntfs_name_print
+	ntfs_name_print
+	ntfs_name_print
+	ntfs_name_print
+	ntfs_name_print
+	ntfs_name_print
+	ntfs_name_print
+	ntfs_dt_add2
+	ntfs_dt_root
+	ntfs_dt_root
+	ntfs_dt_root
+	ntfs_dt_root
+	ntfs_dt_alloc_remove
+	ntfs_dt_alloc_remove
+	ntfs_dt_root_remove
+	ntfs_dt_root_remove
+	ntfs_ie_set_vcn
+	ntfs_name_print
+	ntfs_dt_find_parent
+	ntfs_ie_get_vcn
+	ntfs_ie_get_vcn
+	ntfs_ie_get_vcn
+	ntfs_ie_get_vcn
+	ntfs_dt_alloc_replace
+	ntfs_dt_root_replace
+	ntfs_ie_copy
+	ntfs_ie_set_vcn
+	ntfs_dt_find4
+	ntfs_dt_find4
+	ntfs_ie_get_vcn
+	ntfs_ie_get_vcn
+	ntfs_ie_get_vcn
+
+ntfs_file_remove2
+	ntfs_file_remove
+	utils_free_non_residents2
+	utils_mftrec_mark_free5
+	utils_volume_commit
+
+ntfs_test_bmp
+	ntfs_bmp_alloc
+	ntfs_bmp_alloc
+	ntfs_bmp_free
+	ntfs_inode_open2
+
+ntfs_test_bmp2
+	ntfs_binary_print
+	ntfs_binary_print
+	ntfs_binary_print
+	ntfs_binary_print
+	ntfs_binary_print
+	ntfs_binary_print
+	ntfs_bmp_set_range
+	ntfs_bmp_set_range
+	ntfs_bmp_set_range
+	ntfs_bmp_set_range
+	ntfs_bmp_set_range
+
+main
+	ntfs_inode_close2
+	ntfs_umount2
+	ntfs_file_remove2
+	parse_options
+	utils_pathname_to_inode2
+	utils_mount_volume2
+

@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>NTFS Index sizes</title>
+  <meta content="Richard Russon (FlatCap)" name="author">
+</head>
+<body>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2"
+ cellspacing="0">
+  <tbody>
+    <tr>
+      <th colspan="2">Files</th>
+      <th>end</th>
+      <th>read</th>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>order 0</td>
+      <td>1</td>
+      <td>mft</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>order 1</td>
+      <td>1</td>
+      <td>1 index</td>
+    </tr>
+    <tr>
+      <td>262</td>
+      <td>order 2</td>
+      <td>15</td>
+      <td>2 indexes</td>
+    </tr>
+    <tr>
+      <td>4723</td>
+      <td>order 3</td>
+      <td>277</td>
+      <td>3 indexes</td>
+    </tr>
+    <tr>
+      <td>96001</td>
+      <td>order 4</td>
+      <td>5000</td>
+      <td>4 indexes</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+Order 5: 1.5x10<sup>6</sup><br>
+Order 6: 2.1x10<sup>7</sup><br>
+Order 7: 3.2x10<sup>8</sup><br>
+<br>
+</body>
+</html>

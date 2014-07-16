@@ -1,0 +1,33 @@
+#!/bin/bash
+
+if [ -z "$SSH_AUTH_SOCK" -o -z "$SSH_AGENT_PID" ]; then
+	echo run ssh-helper
+	exit 1
+fi
+
+echo -n "fs "
+ping -w 1 fs > /dev/null 2>&1
+if [ $? = 0 ]; then
+	rsync -aH  --delete --exclude ".*swp" --exclude debug-rm/\[xyz\] --exclude images $* /home/flatcap/work/ fs:private/source
+	if [ $? = 0 ]; then
+		echo "backup succeeded"
+	else
+		echo "backup failed"
+	fi
+else
+	echo "is down"
+fi
+
+echo -n "derwent "
+ping -w 2 derwent.arafel.org.uk > /dev/null 2>&1
+if [ $? = 0 ]; then
+	rsync -aHz --delete --exclude ".*swp" --exclude debug-rm/\[xyz\] --exclude images $* /home/flatcap/work/ derwent.arafel.org.uk:work
+	if [ $? = 0 ]; then
+		echo "backup succeeded"
+	else
+		echo "backup failed"
+	fi
+else
+	echo "is down"
+fi
+

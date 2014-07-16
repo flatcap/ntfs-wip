@@ -1,0 +1,29 @@
+FIND
+        look at every device /dev/hda1, hda2, sda1, loop0, ataraid/* etc
+        find any that have NTFS signatures
+        identify version of NTFS?
+        give a mount command?
+        give fstab lines?
+        get list from devices.txt
+        --scan = all devs
+        --dev  = this dev
+        --fstab
+        --mount
+        --uid=name/id
+        --gid=name/id
+        --perms=set
+        --auto
+        --noauto
+        --mountpoint
+        --owner
+        --owners
+
+        hd loop md sd
+
+        tool to identify NTFS partitions
+        tool to generate command lines / fstabs
+
+        iterate through all block devices
+
+        identify ntfs versions, print free space?
+

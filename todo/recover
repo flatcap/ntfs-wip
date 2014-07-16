@@ -1,0 +1,23 @@
+RECOVER
+        orphan file record to file
+
+        -i info about file (default)
+        -r recover
+
+        -s work in sectors
+        -c work in clusters
+
+        -C cluster size bytes
+
+        -o offset of file record
+        -O offset of start of volume
+
+        Use $Boot at offset x option
+        or decode $Boot at offset x
+
+        search for NTFS metadata option
+
+        can intuit clustersize from 0x30 attribute
+
+        create a sparse file if some dataruns are missing
+

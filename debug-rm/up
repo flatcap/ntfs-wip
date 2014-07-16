@@ -1,0 +1,23 @@
+#!/bin/bash
+
+DISK=y
+DIR=fuse
+
+#OPTS="$OPTS,ro"
+#OPTS="$OPTS,show_sys_files"
+
+if [ -x ntfsmount ]; then
+	BIN=./ntfsmount
+else
+	BIN=~/bin/ntfsmount
+fi
+
+[ "$OPTS" ] && OPTS="-o $OPTS"
+
+mkdir -p $DIR
+
+$BIN $DISK $DIR $OPTS
+
+ls -l $DIR/add
+./down
+

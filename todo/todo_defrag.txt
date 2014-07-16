@@ -1,0 +1,5 @@
+
+create a binary tree of areas by size
+
+determine the minimum amount to move to maximise the consolidated space/data
+

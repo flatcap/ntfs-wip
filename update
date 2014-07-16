@@ -1,0 +1,14 @@
+#!/bin/bash
+
+DIRS="cvs rm"
+
+for i in $DIRS; do
+	pushd $i > /dev/null
+	echo cvs dir: $i
+	cvs update
+	popd > /dev/null
+done
+
+#echo updating wiki:
+#wiki.get
+

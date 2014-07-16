@@ -1,0 +1,24 @@
+
+#include "logging.h"
+
+int levels = 0;
+
+if (strncmp (argv[optind-1], "--log-", 6) == 0) {
+	if (!ntfs_log_parse_option (argv[optind-1]))
+		err++;
+	break;
+}
+
+ntfs_log_clear_levels(NTFS_LOG_LEVEL_QUIET);
+
+ntfs_log_set_levels(NTFS_LOG_LEVEL_VERBOSE);
+
+/* Make sure we're in sync with the log levels */
+levels = ntfs_log_get_levels();
+if (levels & NTFS_LOG_LEVEL_VERBOSE)
+	opts.verbose++;
+if (!(levels & NTFS_LOG_LEVEL_QUIET))
+	opts.quiet++;
+
+ntfs_log_set_handler(ntfs_log_handler_outerr);
+

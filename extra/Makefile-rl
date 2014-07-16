@@ -1,0 +1,138 @@
+WORKDIR	= ../rm
+TEST_VALGRIND	= valgrind
+TEST_RUNLIST	= rl
+
+# include/ntfs
+S1	= attrib.h attrlist.h bitmap.h bootsect.h collate.h compat.h \
+	  compress.h debug.h device.h device_io.h dir.h endians.h index.h \
+	  inode.h layout.h lcnalloc.h list.h logfile.h logging.h mft.h mst.h \
+	  ntfstime.h rich.h runlist.h security.h support.h tree.h types.h \
+	  unistr.h version.h volume.h
+
+# libntfs
+S2	= attrib.c attrlist.c bitmap.c bootsect.c collate.c compat.c \
+	  compress.c debug.c device.c dir.c index.c inode.c lcnalloc.c \
+	  logfile.c logging.c mft.c mst.c rich.c runlist.c security.c tree.c \
+	  unistr.c unix_io.c version.c volume.c
+
+CC      = gcc
+RM      = rm -fr
+AR	= ar
+LN	= ln -f
+VAL	= valgrind
+
+#CFLAGS += -O2
+#CFLAGS += -DDEBUG
+CFLAGS += -DNTFS_TEST
+#CFLAGS += -DNTFS_RICH
+CFLAGS += -g
+CFLAGS += -DHAVE_CONFIG_H
+CFLAGS += -D_FILE_OFFSET_BITS=64
+CFLAGS += -DFUSE_USE_VERSION=22
+CFLAGS += -pipe
+CFLAGS += -W
+CFLAGS += -Wall
+CFLAGS += -Waggregate-return
+CFLAGS += -Wbad-function-cast
+CFLAGS += -Wcast-align
+CFLAGS += -Wcast-qual
+CFLAGS += -Wdisabled-optimization
+CFLAGS += -Wdiv-by-zero
+CFLAGS += -Wfloat-equal
+CFLAGS += -Winline
+CFLAGS += -Wmissing-declarations
+CFLAGS += -Wmissing-format-attribute
+CFLAGS += -Wmissing-noreturn
+CFLAGS += -Wmissing-prototypes
+CFLAGS += -Wmultichar
+CFLAGS += -Wnested-externs
+CFLAGS += -Wpointer-arith
+CFLAGS += -Wredundant-decls
+CFLAGS += -Wshadow
+CFLAGS += -Wsign-compare
+CFLAGS += -Wstrict-prototypes
+CFLAGS += -Wundef
+CFLAGS += -Wwrite-strings
+#CFLAGS += -Werror
+
+SRC	= rl.c attrib.c attrlist.c bitmap.c bootsect.c \
+	  collate.c compat.c compress.c debug.c device.c dir.c \
+	  index.c inode.c lcnalloc.c logfile.c mft.c mst.c rich.c runlist.c \
+	  security.c tree.c unistr.c unix_io.c volume.c
+
+HDR	= attrib.h attrlist.h bitmap.h bootsect.h cluster.h collate.h compat.h \
+	  compress.h config.h debug.h device.h device_io.h dir.h endians.h \
+	  index.h inode.h layout.h lcnalloc.h list.h logfile.h mft.h mst.h \
+	  rich.h runlist.h security.h support.h tree.h types.h unistr.h \
+	  utils.h version.h volume.h
+
+OBJ     = $(SRC:.c=.o)
+
+OUT	= rl
+
+LIB	= ntfsprogs.a
+
+all: $(OUT)
+
+$(LIB): $(OBJ)
+	$(AR) crus $@ $^
+
+.c.o:
+	$(CC) $(CFLAGS) -c $< -o $@
+
+%: %.c $(LIB)
+	$(CC) $(CFLAGS) -o $@ $^
+
+setup: $(S1) $(S2)
+
+$(S1):
+	$(LN) $(WORKDIR)/include/ntfs/$@
+
+$(S2):
+	$(LN) $(WORKDIR)/libntfs/$@
+
+tags: dummy
+	ctags *.[ch]
+
+strip: $(OUT)
+	strip $^
+
+clean:
+	$(RM) $(OUT) $(LIB) *.o *~ *.bak
+	$(RM) attr[123].bin frag[123][123][123] pure-[cn][ms] zero
+	$(RM) tags
+
+distclean: clean
+	$(RM) .tm_project.cache
+	$(RM) $(S1)
+	$(RM) $(S2)
+
+dummy:
+
+runlist-data:
+	$(LN) -s $(WORKDIR)/test/runlist-data
+
+test:	$(TEST_RUNLIST) runlist-data testz testp testf
+
+testz:	$(TEST_RUNLIST)
+	@$(TEST_VALGRIND) $(TEST_RUNLIST) zero > zero
+	@diff -qs {runlist-data/,}zero
+
+
+testp:	$(TEST_RUNLIST)
+	@for i in contig noncontig; do						\
+		for j in single multi; do					\
+			L1=`echo $$i | cut -b1`;				\
+			L2=`echo $$j | cut -b1`;				\
+			FILE=pure-$$L1$$L2;					\
+			$(TEST_VALGRIND) $(TEST_RUNLIST) pure $$i $$j > $$FILE;	\
+			diff -qs {runlist-data/,}$$FILE;			\
+		done;								\
+	done
+
+testf:	$(TEST_RUNLIST)
+	@for i in 123 132 213 231 312 321; do					\
+		$(TEST_VALGRIND) $(TEST_RUNLIST) frag $$i > frag$$i;		\
+		diff -qs {runlist-data/,}frag$$i;				\
+	done
+

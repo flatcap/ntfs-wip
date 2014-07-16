@@ -1,0 +1,138 @@
+add logging flag "flush output" default to "on"
+
+remove line breaks from log messages (not our job)
+
+build info in tools --build-info --lib-build-info
+built by X on DATE, gcc version Y
+
+--debug => --trace
+--debug => --verbose
+--debug => !--quiet
+
+could ntfsresize be refactored using two volumes -- before and after?
+
+change x = malloc(sizeof(type)) to x = malloc(sizeof(*x))
+
+ntfs_bug -- print assertion expression and call stack
+or call it ntfs_internal
+
+all tools' options struct are array of
+  name, type, description, range?
+allow machine-generated option page
+
+add a magic number to the beginning of each major struct?
+perhaps debug only?
+
+all local includes to "ntfs/*.h"
+
+remove all "exit"s from libntfs
+unistr.c - debug only
+
+find and tidy all
+	log_<LEVEL> ("<LEVEL>!! message")
+
+move PATH_SEP, MAX_PATH, etc into fs.h?
+PAGE_SIZE? system.h?
+
+turn some errors into warnings and some into criticals
+
+log_assert (EXPRESSION)
+BUG! "EXPRESSION" failed
+
+update all the version info copyrights
+
+what about output force to stderr
+(things that aren't _errors_)
+
+size, scale and option parsing
+decimal and binary exponents
+
+move progress bar into lib
+
+remove my XXX's
+
+--parseable-output
+change output format to be more easily read by computer
+
+long-options for all tools
+
+extra linux-ntfs-dev@lists.sourceforge.net, etc
+
+ask who relies on the debug formatting of which functions?
+
+static bool user_has_been_shown_error_instructions = false;
+---------
+An error has occurred....
+Please contact ...
+send them this log
+this notice won't be shown again, but errors will
+library and tools versions
+-------
+other errors/criticals:
+  lib/tool ver, file/line/function
+  message
+
+locate duplicate log messags
+not too bad
+
+pass a buffer to the logs with a size then f_n_printf
+
+move more utils from user to lib space
+rename utils_* to ntfs_*
+
+cache messages until a final \n
+
+move dump_runlist to runlist.c?
+
+ntfs_attr_make_resident - what's with "err"?
+
+LOTS of debug-only error messages
+what shall we do with them?
+
+error messages can't be useful to both end-user and debugger
+who do you please?
+
+54 calls to ntfs_attr_close, ntfs_attr_put_search_ctx, ntfs_inode_close
+all of which are safe for NULL.  (all library functions MUST be, anyway)
+
+log_flag_indent? (by call stack depth?)
+log_level_memdump?
+log_flag_colour_debug/trace
+log_flag_condense_duplicateds
+
+log_write_to_disk
+
+stack calls in logging
+
+destructor called on segfault?
+
+signal handler to callstack
+
+trace exit "return: x failure"
+
+depth of logging, too deep?
+
+logger remembers stack in case of segfault/critical
+
+split DEBUG into specifics
+
+logging printf substitution (in redirect fn?)
+%S = unicode name str - what about length?
+%p and look for struct magic?
+<vol> - too many params, <%pvol>?
+"%dt, %vol, %ino" - don't use printf attribute
+
+
+ * @key:	[IN] key for which to search in the index
+ * @key_len:	[IN] length of @key in bytes
+ * @ictx:	[IN/OUT] context describing the index and the returned entry
+ * @wrp:       [OUT] copy of the multi sector transfer deprotected restart page
+ * @lsn:       [OUT] set to the current logfile lsn on success
+ * @rp:         [OUT] on success this is a copy of the current restart page
+ * @guid:	[IN] guid to check
+ * @guid:	[IN]  guid to convert
+ * @guid_str:	[OUT] string in which to return the GUID (optional)
+ * @sid:	[IN]  SID for which to determine the maximum string size
+ * @sid:		[IN]  SID to convert
+ * @sid_str:		[OUT] string in which to return the SID (optional)
+ * @sid_str_size:	[IN]  size in bytes of @sid_str

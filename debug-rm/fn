@@ -1,0 +1,104 @@
+Runtime
+	main
+	parse_options
+	usage
+	version
+
+Bitmap
+	ntfs_bmp_create
+	ntfs_bmp_commit
+	ntfs_bmp_rollback
+	ntfs_bmp_free
+
+	ntfs_bmp_add_data
+	ntfs_bmp_find_last_set
+	ntfs_bmp_find_space
+	ntfs_bmp_get_data
+	ntfs_bmp_set_range
+
+Directory
+	ntfs_dir_create
+	ntfs_dir_commit
+	ntfs_dir_rollback
+	ntfs_dir_free
+
+	ntfs_dir_add
+	ntfs_dir_find2
+	ntfs_dir_truncate
+
+Directory tree (index)
+	ntfs_dt_create
+	ntfs_dt_commit
+	ntfs_dt_rollback
+	ntfs_dt_free
+
+	ntfs_dt_add2
+	ntfs_dt_create_children2
+	ntfs_dt_find
+	ntfs_dt_find2
+	ntfs_dt_find3
+	ntfs_dt_find4
+	ntfs_dt_find_all
+	ntfs_dt_find_parent
+	ntfs_dt_initialise
+	ntfs_dt_isroot
+	ntfs_dt_transfer
+
+	ntfs_dt_alloc_add
+	ntfs_dt_alloc_count
+	ntfs_dt_alloc_freespace
+	ntfs_dt_alloc_remove
+	ntfs_dt_alloc_replace
+
+	ntfs_dt_root_add
+	ntfs_dt_root_count
+	ntfs_dt_root_freespace
+	ntfs_dt_root_remove
+	ntfs_dt_root_replace
+
+Index entry
+	ntfs_ie_create
+	ntfs_ie_free
+
+	ntfs_ie_copy
+	ntfs_ie_get_vcn
+	ntfs_ie_remove_name
+	ntfs_ie_remove_vcn
+	ntfs_ie_set_name
+	ntfs_ie_set_vcn
+
+Volume
+	ntfs_volume_mount2
+	ntfs_volume_commit
+	ntfs_volume_rollback
+	ntfs_volume_umount2
+
+	ntfs_inode_close2
+	ntfs_inode_open2
+	ntfs_inode_open3
+
+MFT
+	ntfs_mft_find_free_entry
+	ntfs_mft_mark_record_free6
+	ntfs_mft_add_attr
+	ntfs_mft_add_index
+	ntfs_mft_free_space
+	ntfs_mft_remove_attr
+	ntfs_mft_resize_resident
+
+Utils
+	utils_free_non_residents2
+	utils_free_non_residents3
+	utils_index_init
+	utils_pathname_to_inode2
+
+High-level
+	ntfs_file_add2
+	ntfs_file_remove
+	ntfs_file_remove2
+
+Debug & Test
+	ntfs_name_print
+	ntfs_dir_print
+	ntfs_dt_print
+

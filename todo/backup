@@ -1,0 +1,32 @@
+BACKUP
+        save the essence of a file, dir or volume
+
+        file:
+                name
+                timestamp
+                security info
+                data
+
+        dir:
+                name
+                timestamp
+                security info
+
+        volume:
+                label
+                serial number
+                security info
+                cluster size?
+
+        if partimage stores $Bitmap + data, it should be possible to write
+        a thin layer to use the driver or tools on it
+        md driver to piece archives together
+
+        loopback mount file with decode plugin?
+
+        backup as blocked files => can do incremental
+
+        what about encrypted files?
+
+        [compress|block] at file, dir? or fs level
+

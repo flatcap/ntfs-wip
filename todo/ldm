@@ -1,0 +1,20 @@
+BUG in LDM kernel driver in ldm_free_vblks
+list_for_each_safe calls list_del unsafely
+
+update kernel maintainer list
+
+update kernel copyright messages
+
+update kernel ldm docs
+
+fixup source headers
+
+tidy up borrowed code (e.g. lists)
+
+fix dump option
+
+sort out vblk disk guids
+
+it doesn't piece together multiple vblks
+a disk has 16 chars missing from the "AltName"
+

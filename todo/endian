@@ -1,0 +1,3 @@
+endian checker
+run a test on both a normal and a byte-swapped version of a volume
+(requires a byte-swapper first)

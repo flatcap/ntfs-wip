@@ -1,0 +1,1 @@
+use buddy system to manage ntfs bitmaps

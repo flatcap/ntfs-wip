@@ -1,0 +1,226 @@
+diff -x CVS -urN cvs/include/ntfs/mft.h rm/include/ntfs/mft.h
+--- cvs/include/ntfs/mft.h	2005-10-21 19:05:55.000000000 +0100
++++ rm/include/ntfs/mft.h	2005-10-27 00:36:43.000000000 +0100
+@@ -48,6 +48,7 @@
+ static __inline__ int ntfs_mft_record_read(const ntfs_volume *vol,
+ 		const MFT_REF mref, MFT_RECORD *b)
+ {
++	ntfs_log_trace("entering\n");
+ 	return ntfs_mft_records_read(vol, mref, 1, b);
+ }
+ 
+@@ -75,6 +76,7 @@
+ static __inline__ int ntfs_mft_record_write(const ntfs_volume *vol,
+ 		const MFT_REF mref, MFT_RECORD *b)
+ {
++	ntfs_log_trace("entering\n");
+ 	return ntfs_mft_records_write(vol, mref, 1, b);
+ }
+ 
+diff -x CVS -urN cvs/libntfs/attrib.c rm/libntfs/attrib.c
+--- cvs/libntfs/attrib.c	2005-10-28 14:47:37.000000000 +0100
++++ rm/libntfs/attrib.c	2005-10-28 14:48:07.000000000 +0100
+@@ -669,6 +669,7 @@
+ 		errno = EINVAL;
+ 		return NULL;
+ 	}
++	ntfs_log_trace("entering\n");
+ retry:
+ 	rl = na->rl;
+ 	if (!rl)
+@@ -3247,6 +3248,7 @@
+ 		errno = EIO;
+ 		return -1;
+ 	}
++	ntfs_log_trace("entering\n");
+ 	/* Resize the resident part of the attribute record. */
+ 	if (ntfs_attr_record_resize(m, a, (le16_to_cpu(a->value_offset) +
+ 			new_size + 7) & ~7) < 0) {
+@@ -4854,6 +4856,7 @@
+ 		errno = EINVAL;
+ 		return -1;
+ 	}
++	ntfs_log_trace("entering\n");
+ 
+ 	if (na->data_size == newsize)
+ 		return 0;
+diff -x CVS -urN cvs/libntfs/bootsect.c rm/libntfs/bootsect.c
+--- cvs/libntfs/bootsect.c	2005-10-21 19:05:55.000000000 +0100
++++ rm/libntfs/bootsect.c	2005-10-27 00:53:22.000000000 +0100
+@@ -60,6 +60,7 @@
+ {
+ 	u32 i;
+ 
++	ntfs_log_trace("entering\n");
+ 	ntfs_log_debug("\nBeginning bootsector check...\n");
+ 
+ 	/* Calculate the checksum. Note, this is just a simple addition of
+@@ -175,6 +176,7 @@
+ 	u8 sectors_per_cluster;
+ 	s8 c;
+ 
++	ntfs_log_trace("entering\n");
+ 	/* We return -1 with errno = EINVAL on error. */
+ 	errno = EINVAL;
+ 
+diff -x CVS -urN cvs/libntfs/device.c rm/libntfs/device.c
+--- cvs/libntfs/device.c	2005-10-28 14:47:37.000000000 +0100
++++ rm/libntfs/device.c	2005-10-28 14:48:07.000000000 +0100
+@@ -290,6 +290,7 @@
+ {
+ 	s64 br, i;
+ 
++	ntfs_log_trace("dev %p, pos %lld, count %lld, bksize %d\n", dev, pos, count, bksize);
+ 	if (bksize & (bksize - 1) || bksize % NTFS_BLOCK_SIZE) {
+ 		errno = EINVAL;
+ 		return -1;
+@@ -353,6 +354,7 @@
+ 	}
+ 	if (!count)
+ 		return 0;
++	ntfs_log_trace("entering\n");
+ 	/* Prepare data for writing. */
+ 	for (i = 0; i < count; ++i) {
+ 		int err;
+@@ -394,6 +396,7 @@
+ {
+ 	s64 br;
+ 
++	ntfs_log_trace("entering\n");
+ 	if (!vol || lcn < 0 || count < 0) {
+ 		errno = EINVAL;
+ 		return -1;
+@@ -427,6 +430,7 @@
+ {
+ 	s64 bw;
+ 
++	ntfs_log_trace("entering\n");
+ 	if (!vol || lcn < 0 || count < 0) {
+ 		errno = EINVAL;
+ 		return -1;
+diff -x CVS -urN cvs/libntfs/inode.c rm/libntfs/inode.c
+--- cvs/libntfs/inode.c	2005-10-28 14:47:37.000000000 +0100
++++ rm/libntfs/inode.c	2005-10-28 14:48:08.000000000 +0100
+@@ -168,6 +168,7 @@
+ 			goto put_err_out;
+ 		/* Attribute list attribute not present so we are done. */
+ 		ntfs_attr_put_search_ctx(ctx);
++		ntfs_log_trace ("returning %p\n", ni);
+ 		return ni;
+ 	}
+ 	NInoSetAttrList(ni);
+@@ -190,6 +191,7 @@
+ 		goto put_err_out;
+ 	}
+ 	ntfs_attr_put_search_ctx(ctx);
++	ntfs_log_trace ("returning %p\n", ni);
+ 	return ni;
+ put_err_out:
+ 	if (!err)
+@@ -200,6 +202,7 @@
+ 		err = errno;
+ 	__ntfs_inode_release(ni);
+ 	errno = err;
++	ntfs_log_error ("failed\n");
+ 	return NULL;
+ }
+ 
+diff -x CVS -urN cvs/libntfs/mft.c rm/libntfs/mft.c
+--- cvs/libntfs/mft.c	2005-10-28 14:47:37.000000000 +0100
++++ rm/libntfs/mft.c	2005-10-28 14:48:08.000000000 +0100
+@@ -238,6 +238,7 @@
+ 		errno = EINVAL;
+ 		return -1;
+ 	}
++	ntfs_log_trace("vol %p, mft %lld\n", vol, MREF(mref));
+ 	m = *mrec;
+ 	if (!m) {
+ 		m = (MFT_RECORD*)malloc(vol->mft_record_size);
+diff -x CVS -urN cvs/libntfs/volume.c rm/libntfs/volume.c
+--- cvs/libntfs/volume.c	2005-10-28 05:32:53.000000000 +0100
++++ rm/libntfs/volume.c	2005-10-28 05:50:39.000000000 +0100
+@@ -154,6 +154,7 @@
+ 	ATTR_RECORD *a;
+ 	int eo;
+ 
++	ntfs_log_trace("vol %p\n", vol);
+ 	/* Manually setup an ntfs_inode. */
+ 	vol->mft_ni = ntfs_inode_allocate(vol);
+ 	mb = (MFT_RECORD*)malloc(vol->mft_record_size);
+@@ -426,6 +427,7 @@
+ 		return NULL;
+ 	}
+ 
++	ntfs_log_trace("entering\n");
+ 	/* Allocate the boot sector structure. */
+ 	if (!(bs = (NTFS_BOOT_SECTOR *)malloc(sizeof(NTFS_BOOT_SECTOR))))
+ 		return NULL;
+@@ -780,6 +782,7 @@
+ 	int i, j, eo;
+ 	u32 u;
+ 
++	ntfs_log_trace("entering\n");
+ 	vol = ntfs_volume_startup(dev, rwflag);
+ 	if (!vol) {
+ 		ntfs_log_perror("Failed to startup volume");
+@@ -1166,6 +1169,7 @@
+ 	struct ntfs_device *dev;
+ 	ntfs_volume *vol;
+ 
++	ntfs_log_trace("name %s, rwflag %ld\n", name, rwflag);
+ 	/* Allocate an ntfs_device structure. */
+ 	dev = ntfs_device_alloc(name, 0, &ntfs_device_default_io_ops, NULL);
+ 	if (!dev)
+@@ -1294,6 +1298,7 @@
+ 	FILE *f;
+ 	int err = 0;
+ 
++	ntfs_log_trace("entering\n");
+ 	real_file = malloc(PATH_MAX + 1);
+ 	if (!real_file)
+ 		return -1;
+@@ -1365,6 +1370,7 @@
+ int ntfs_check_if_mounted(const char *file __attribute__((unused)),
+ 		unsigned long *mnt_flags)
+ {
++	ntfs_log_trace("entering\n");
+ 	*mnt_flags = 0;
+ #ifdef HAVE_MNTENT_H
+ 	return ntfs_mntent_check(file, mnt_flags);
+@@ -1646,7 +1652,7 @@
+ 			ntfs_umount(vol, FALSE);
+ 			return NULL;
+ 		}
+-		ntfs_log_quiet("Forced to continue.\n");
++		ntfs_log_warning("Forced to continue.\n");
+ 	}
+ 
+ 	return vol;
+diff -x CVS -urN cvs/ntfsprogs/utils.c rm/ntfsprogs/utils.c
+--- cvs/ntfsprogs/utils.c	2005-10-27 22:40:30.000000000 +0100
++++ rm/ntfsprogs/utils.c	2005-10-28 04:36:48.000000000 +0100
+@@ -123,6 +123,7 @@
+ 		errno = EINVAL;
+ 		return 0;
+ 	}
++	ntfs_log_trace ("\n");
+ 
+ 	if (stat(name, &st) == -1) {
+ 		if (errno == ENOENT) {
+@@ -175,6 +176,7 @@
+ 		errno = EINVAL;
+ 		return NULL;
+ 	}
++	ntfs_log_trace ("\n");
+ 
+ 	if (!utils_valid_device(device, force))
+ 		return NULL;
+@@ -680,7 +682,7 @@
+ 		return -1;
+ 	}
+ 
+-	ntfs_log_trace("entering\n");
++	ntfs_log_trace("vol %p, mft %lld\n", vol, MREF(mref));
+ 	/* Does mref lie in the section of $Bitmap we already have cached? */
+ 	if (((s64)MREF(mref) < bmpmref) || ((s64)MREF(mref) >= (bmpmref +
+ 			(sizeof(buffer) << 3)))) {

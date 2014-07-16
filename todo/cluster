@@ -1,0 +1,92 @@
+CLUSTER
+        what's in the last 'n' units?
+
+        how much data needs moving to resize at 75%?
+
+        filename -> data runs
+        inode    -> data runs
+        range    -> callback (data run, inode)
+        last(n)  -> list inodes
+
+        -F,--filename
+        -I,--inode
+
+        Give the info index numbers? (for automation) Config option?
+        Any headers have index 00
+
+        -p 80-100 (percentage range)
+        or -p 20 = 0-20%
+           -P 80 = 80-100%
+
+        output highest cluster used? (sort by?)
+
+        --quiet == no output, return codes only
+        normal 0 OK
+               1 Error
+        extra  2 none in use
+               3 some in use
+               4 all in use
+
+        given a cluster number, determine which file owns it
+        (or a sector)
+
+        in use | not
+        file | dir
+        meta | data
+        base | not
+
+        determine the LCN of the sector/cluster
+        iterate through $MFT/$BITMAP
+        for each record, decode data runs
+
+        when matched, iterate through parents to give path
+
+        output cluster size, filename, inode number, runs {start-end|single}
+
+        describe object : user or metadata
+        flags: [UM] - User/Metadata
+               [FD] - File/Dir
+               [!]  - Error
+               [012]- none/some/all in use
+
+        output can be:
+                $DATA - metadata, e.g. $Bitmap, $LogFile
+                $DATA - user file
+                $INDEX_ALLOC - $Extend = metadata
+                $BITMAP
+
+        uniq output
+        no need, given the method we iterate throught the MFT
+        what about extent inodes - we need to get them when
+        we read the base record
+
+        count of clusters in range? (-v?)
+        count of data runs in range? (-v?)
+        flag to function to determine retval
+
+        write a general volume info function, put it in utils and
+        use it for _our_ info
+        %frag'd by data
+        %frag'd by mft recs
+
+        look for a range of clusters, e.g.  12345-  (to end)
+        normal - output inode, filename
+        verbose - breakdown into data runs, etc, show other inodes?
+
+        dump-runs option for a filename / inode (part of ntfsinfo?)
+
+        print matching range? (or leave to ntfsinfo?)
+
+        output the cluster location (low or high) first so the
+        files can be sorted and scripted
+
+        int find_cluster (vol, x, y range, maxhits, flags, result **)
+
+        ret < 0    error
+        ret < max  fewer matches
+        ret > max  more matches
+
+        flags = start, end (sort and discard), sort, count (or stop at max?)
+
+        results = { inum, attrtype, name, len, datarun }
+

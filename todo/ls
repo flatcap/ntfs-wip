@@ -1,0 +1,9 @@
+LS
+        show info about a file, or list files in a directory
+
+        add -R --recursive option
+
+        add year to date stamp
+
+        replace time with CRAM time (option)
+

@@ -1,0 +1,67 @@
+log allocs and frees of objects and buffers?
+
+Command
+        printf
+        puts
+
+Levels
+        debug           x = 42
+        trace           Entering function x
+        progress        54% done
+        info            Volume needs defragmenting
+        warning         You should backup before starting
+        error           Operation failed, no damage done
+        critical        Operation failed, damage may have occurred
+
+Handler
+        default in utils.c
+        primed with quietness level
+        attached to volume
+
+Library
+        pass args to client unaltered
+        pass __FUNCTION__ and __LINE__ to client
+        ifdef DEBUG, handle messages ourselves?
+
+Notes
+        could have two progress meters: current op, overall progress
+
+// LOG_PREFIX, LOG_FILENAME, LOG_LINE, LOG_FUNCTION?
+determine which elements are displayed
+
+// default settings
+// debug - stdout, ifdef DEBUG
+// error - stderr, not quietable
+// quiet - stdout, quietable
+
+--log-file outfile
+
+#define LOG_LEVEL_ALL           (~0)
+#define LOG_LEVEL_NONE          (0)
+#ifdef DEBUG
+#define LOG_LEVEL_DEFAULT       (LOG_LEVEL_INFO | LOG_LEVEL_WARNING | LOG_LEVEL_ERROR | LOG_LEVEL_PERROR | LOG_LEVEL_CRITICAL)
+#else
+#define LOG_LEVEL_DEFAULT       (LOG_LEVEL_INFO | LOG_LEVEL_WARNING | LOG_LEVEL_ERROR | LOG_LEVEL_PERROR | LOG_LEVEL_CRITICAL | LOG_LEVEL_DEBUG | LOG_LEVEL_TRACE)
+#endif
+
+#define LOG_FLAG_ALL            (~0)
+#define LOG_FLAG_NONE           (0)
+#ifdef DEBUG
+#define LOG_FLAG_DEFAULT (LOG_FLAG_PREFIX)
+#else
+#define LOG_FLAG_DEFAULT (LOG_FLAG_PREFIX | LOG_FLAG_FILENAME | LOG_FLAG_LINE)
+#endif
+
+#ifndef NTFS_DISABLE_LOGGING
+#else
+#define log_crit(FORMAT, ARGS...)do {} while (0)
+#define log_debug(FORMAT, ARGS...)do {} while (0)
+#define log_error(FORMAT, ARGS...)do {} while (0)
+#define log_info(FORMAT, ARGS...)do {} while (0)
+#define log_perror(FORMAT, ARGS...)do {} while (0)
+#define log_progress(FORMAT, ARGS...)do {} while (0)
+#define log_quiet(FORMAT, ARGS...)do {} while (0)
+#define log_trace(FORMAT, ARGS...)do {} while (0)
+#define log_verbose(FORMAT, ARGS...)do {} while (0)
+#define log_warn(FORMAT, ARGS...)do {} while (0)
+#endif /* NTFS_DISABLE_LOGGING */

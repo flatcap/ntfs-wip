@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>
+      Person Manager
+    </title>
+  </head>
+  <body>
+    <h1>
+      Person Manager
+    </h1>
+    <form name="focus" action="person.html" method="post" id="focus">
+      <label for="name" accesskey="n"><u>N</u>ame</label>
+      <input class="mand" size="30" name="name" id="name" value="Richard Russon" type="text">
+      <br>
+      <label for="nick" accesskey="k">Nic<u>k</u>name</label>
+      <input size="30" name="nick" id="nick" value="FlatCap" type="text">
+      <br>
+      <label for="email" accesskey="e"><u>E</u>mail</label>
+      <input class="mand" size="60" name="email" id="email" value="rpm@flatcap.org" type="text">
+      <br>
+      <label for="web" accesskey="w"><u>W</u>eb page</label>
+      <input size="60" name="web" id="web" value="http://flatcap.org" type="text">
+      <br>
+      <br>
+      <input name="action" value="edit" type="hidden">
+      <input name="id" value="46" type="hidden">
+      <input name="param" value="OK" type="submit">
+      <input name="param" value="Cancel" type="submit">
+    </form>
+    <script type="text/javascript">
+    document.getElementById('name').focus();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+g_bad_blocks
+        append_to_bad_blocks
+        mkntfs_exit
+
+g_buf
+        mkntfs_redirect
+        create_file_volume
+        mkntfs_create_root_structures
+        mkntfs_exit
+        mkntfs_fill_device_with_zeroes
+        mkntfs_initialize_rl_bad
+
+g_index_block
+        mkntfs_redirect
+        create_file_volume
+        mkntfs_create_root_structures
+        mkntfs_exit
+
+g_lcn_bitmap
+        mkntfs_redirect
+        allocate_scattered_clust
+        deallocate_scattered_clusters
+        mkntfs_create_root_structures
+        mkntfs_exit
+        mkntfs_initialize_bitmaps
+        mkntfs_initialize_rl_boot
+        mkntfs_initialize_rl_logfile
+        mkntfs_initialize_rl_mft
+        mkntfs_override_phys_params
+
+g_lcn_bitmap_byte_size
+        mkntfs_redirect
+        mkntfs_create_root_structures
+        mkntfs_initialize_bitmaps
+
+g_logfile_lcn
+        mkntfs_redirect
+        mkntfs_initialize_rl_logfile
+        mkntfs_initialize_rl_mft
+
+g_logfile_size
+        mkntfs_create_root_structures
+        mkntfs_initialize_rl_logfile
+
+g_mft_bitmap
+        mkntfs_create_root_structures
+        mkntfs_exit
+        mkntfs_initialize_bitmaps
+
+g_mft_bitmap_byte_size
+        mkntfs_create_root_structures
+        mkntfs_initialize_bitmaps
+
+g_mft_lcn
+        mkntfs_redirect
+        mkntfs_create_root_structures
+        mkntfs_initialize_rl_mft
+
+g_mftmirr_lcn
+        mkntfs_redirect
+        mkntfs_create_root_structures
+        mkntfs_initialize_rl_mft
+
+g_mft_size
+        mkntfs_redirect
+        mkntfs_create_root_structures
+        mkntfs_initialize_bitmaps
+        mkntfs_initialize_rl_mft
+
+g_mft_zone_end
+        allocate_scattered_clust
+        mkntfs_initialize_rl_mft
+
+g_num_bad_blocks
+        append_to_bad_blocks
+
+g_rl_bad
+        mkntfs_create_root_structures
+        mkntfs_exit
+        mkntfs_initialize_rl_boot
+
+g_rl_boot
+        mkntfs_create_root_structures
+        mkntfs_exit
+        mkntfs_initialize_rl_boot
+
+g_rl_logfile
+        mkntfs_create_root_structures
+        mkntfs_exit
+        mkntfs_initialize_rl_logfile
+
+g_rl_mft
+        mkntfs_create_root_structures
+        mkntfs_exit
+        mkntfs_initialize_rl_mft
+
+g_rl_mft_bmp
+        mkntfs_create_root_structures
+        mkntfs_exit
+        mkntfs_initialize_bitmaps
+        mkntfs_initialize_rl_mft
+
+g_rl_mftmirr
+        mkntfs_redirect
+        mkntfs_create_root_structures
+        mkntfs_exit
+        mkntfs_initialize_rl_mft
+
+g_vol
+        add_attr_index_root
+        add_attr_std_info
+        create_backup_boot_sector
+        create_hardlink
+        initialize_quota
+        insert_file_link_in_dir_indexx
+        insert_index_entry_in_res_dir_indexr
+        insert_non_resident_attr_in_mft_recordm
+        insert_positioned_attr_in_mft_recordt
+        mkntfs_attr_find
+        mkntfs_open_partition
+        mkntfs_redirect
+        mkntfs_write
+        allocate_scattered_clust
+        ntfs_rlwrite
+        create_file_volume
+        dump_attr_record
+        mkntfs_create_root_structures
+        mkntfs_exit
+        mkntfs_fill_device_with_zeroes
+        mkntfs_initialize_bitmaps
+        mkntfs_initialize_rl_bad
+        mkntfs_initialize_rl_boot
+        mkntfs_initialize_rl_logfile
+        mkntfs_initialize_rl_mft
+        mkntfs_override_phys_params
+        mkntfs_sync_index_record
+
